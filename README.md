@@ -1,3 +1,5 @@
-Instrucciones:
+## Instrucciones:
+
 cmake CMakeLists.txt
+
 make
