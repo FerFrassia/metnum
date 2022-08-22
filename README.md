@@ -4,4 +4,4 @@ cmake CMakeLists.txt
 
 make
 
-./tp1 <archivo> <p>
+./tp1 archivo p
