@@ -4,6 +4,95 @@
 #include <algorithm>
 #include <sstream>
 
+namespace MatrixBuilder {
+
+    list<string> split(string originalString, char delim) {
+        list<string> output;
+        string current;
+        stringstream stream(originalString);
+
+        while (getline(stream, current, delim)) {
+            output.push_back(current);
+        }
+
+        return output;
+    }
+
+    void addLink(inputMatrix &W, string originalString) {
+        list<string> linkList = split(originalString, ' ');
+        int referencingPage = stoi(linkList.front());
+        int referencedPage = stoi(linkList.back());
+        W[referencingPage].push_back(referencedPage);
+    }
+
+    /*
+     * Asumimos que W esta ordenada.
+     * TODO: ordenar el input/ordenar la inputMatrix
+     */
+    extern inputMatrix buildW(string file) {
+        string line;
+        ifstream myfile (file);
+        inputMatrix res;
+        if (myfile.is_open()) {
+            getline(myfile, line); //number of pages
+            list<double> emptyList;
+            inputMatrix result(stoi(line)+1, emptyList);
+
+            getline(myfile, line); //number of links
+            while(getline(myfile, line)) {
+                addLink(result, line); //add each link
+            }
+            res = result;
+            myfile.close();
+        } else {
+            cout << "unable to open file";
+        }
+        return res;
+    }
+
+    extern void printInputMatrix(inputMatrix &input) {
+        for (unsigned long i = 0; i < input.size(); ++i) {
+            string page = "[" + to_string(i) + "]: ";
+            list<double>::iterator it;
+            for (it = input[i].begin(); it != input[i].end(); ++it) {
+                int linkedPage = *it;
+                page = page + "[" + to_string(linkedPage) + "] -> ";
+            }
+            cout << page + "\n" << endl;
+        }
+    }
+
+    CSR buildD(inputMatrix &W) {
+
+    }
+
+    CSR convertInputMatrixToCsr(inputMatrix W) {
+
+    }
+
+    CSR createIdentity(int size) {
+
+    }
+
+}
+
+namespace MatrixOperator {
+
+    void multiply(CSR &W, CSR &D) {
+
+    }
+
+    void scale(CSR &M, int s) {
+
+    }
+
+    void add(CSR &A, CSR &B) {
+
+    }
+}
+
+
+
 using namespace std;
 
 list<string> split(string originalString, char delim) {
@@ -63,47 +152,47 @@ Matrix* Matrix::generateW(string file) {
     string line;
     ifstream myfile (file);
     Matrix *result = new Matrix();
-    if (myfile.is_open()) {
-        getline(myfile, line); //number of pages
-        list<int> emptyList;
-        vector<list<int>> vect(stoi(line)+1, emptyList);
-
-        getline(myfile, line); //number of links
-        while(getline(myfile, line)) {
-            addLink(line); //add each link
-
-        }
-        myfile.close();
-    } else {
-        cout << "unable to open file";
-    }
+//    if (myfile.is_open()) {
+//        getline(myfile, line); //number of pages
+//        list<int> emptyList;
+//        vector<list<int>> vect(stoi(line)+1, emptyList);
+//
+//        getline(myfile, line); //number of links
+//        while(getline(myfile, line)) {
+//            addLink(line); //add each link
+//
+//        }
+//        myfile.close();
+//    } else {
+//        cout << "unable to open file";
+//    }
     return result;
 }
 
 vector<double> Matrix::generateD(Matrix w) {
     vector<double> res(w.size());
-    for (int i = 0; i < w.size(); i++) {
-        int c_j = w.get(w, i).size();
-        res[i] = c_j == 0 ? 0 : 1/c_j;
-    }
+//    for (int i = 0; i < w.size(); i++) {
+//        int c_j = w.get(w, i).size();
+//        res[i] = c_j == 0 ? 0 : 1/c_j;
+//    }
     return res;
 }
 
 vector<vector<double>> Matrix::multiply(Matrix w, vector<double> d) {
     int matrix_size = w.size();
     vector<vector<double>> result(matrix_size);
-    for (int i = 0; i < w.size(); i++) {
-        list<int> column_i = w.get(i);
-        list<int>::iterator it = column_i.begin();
-        for (int j = 0; j < matrix_size; j++) {
-            if (j + 1 < *it) {
-                result[i][j] = 0;
-            } else {
-                result[i][j] = d[i];
-                it++;
-            }
-        }
-    }
+//    for (int i = 0; i < w.size(); i++) {
+//        list<int> column_i = w.get(i);
+//        list<int>::iterator it = column_i.begin();
+//        for (int j = 0; j < matrix_size; j++) {
+//            if (j + 1 < *it) {
+//                result[i][j] = 0;
+//            } else {
+//                result[i][j] = d[i];
+//                it++;
+//            }
+//        }
+//    }
     return result;
 }
 

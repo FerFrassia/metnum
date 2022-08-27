@@ -5,6 +5,42 @@
 
 using namespace std;
 
+struct CSR {
+    vector<double> A;
+    vector<int> JA;
+    vector<int> IA;
+};
+
+typedef vector<list<double>> inputMatrix;
+typedef vector<double> diagonalMatrix;
+
+namespace MatrixBuilder {
+
+    list<string> split(string originalString, char delim);
+
+    void addLink(inputMatrix &W, string originalString);
+
+    inputMatrix buildW(string file);
+
+    void printInputMatrix(inputMatrix &input);
+
+    CSR buildD(inputMatrix &W);
+
+    CSR convertInputMatrixToCsr(inputMatrix W);
+
+    CSR createIdentity(int size);
+
+}
+
+namespace MatrixOperator {
+
+    void multiply(CSR &W, CSR &D);
+
+    void scale(CSR &M, int s);
+
+    void add(CSR &A, CSR &B);
+}
+
 class Matrix {
     public:
         Matrix(string file);
