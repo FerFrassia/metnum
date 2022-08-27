@@ -35,7 +35,7 @@ namespace MatrixBuilder {
         inputMatrix res;
         if (myfile.is_open()) {
             getline(myfile, line); //number of pages
-            list<double> emptyList;
+            list<int> emptyList;
             inputMatrix result(stoi(line)+1, emptyList);
 
             getline(myfile, line); //number of links
@@ -53,7 +53,7 @@ namespace MatrixBuilder {
     extern void printInputMatrix(inputMatrix &input) {
         for (unsigned long i = 0; i < input.size(); ++i) {
             string page = "[" + to_string(i) + "]: ";
-            list<double>::iterator it;
+            list<int>::iterator it;
             for (it = input[i].begin(); it != input[i].end(); ++it) {
                 int linkedPage = *it;
                 page = page + "[" + to_string(linkedPage) + "] -> ";
@@ -67,7 +67,57 @@ namespace MatrixBuilder {
     }
 
     CSR convertInputMatrixToCsr(inputMatrix W) {
+        int m = W.size();
+        CSR result;
+//        vi A;
+//        vi IA = { 0 }; // IA matrix has N+1 rows
+//        vi JA;
+        int NNZ, i = 0;
 
+
+        for (i = 0; i < m; i++) {
+            int n = W[i].size();
+            list<int>::iterator it;
+            int j = 0;
+            for (it = W[i].begin(); it != W[i].end(); ++it) {
+                int rowInJColumn = *it;
+//                if (W[i][j] != 0) {
+                    result.A.push_back(rowInJColumn);
+                    result.JA.push_back(j);
+
+                    // Count Number of Non Zero
+                    // Elements in row i
+                    j++;
+                    NNZ++;
+//                }
+            }
+            result.IA.push_back(NNZ);
+        }
+
+//        printMatrix(M);
+        printAVector(result.A, (char*)"A = ");
+        printVector(result.JA, (char*)"JA = ");
+        printVector(result.IA, (char*)"IA = ");
+    }
+
+    void printAVector(vector<double>& V, char* msg)
+    {
+
+        cout << msg << "[ ";
+        for_each(V.begin(), V.end(), [](int a) {
+            cout << a << " ";
+        });
+        cout << "]" << endl;
+    }
+
+    void printVector(vector<int>& V, char* msg)
+    {
+
+        cout << msg << "[ ";
+        for_each(V.begin(), V.end(), [](int a) {
+            cout << a << " ";
+        });
+        cout << "]" << endl;
     }
 
     CSR createIdentity(int size) {

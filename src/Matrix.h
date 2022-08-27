@@ -8,10 +8,10 @@ using namespace std;
 struct CSR {
     vector<double> A;
     vector<int> JA;
-    vector<int> IA;
+    vector<int> IA {0};
 };
 
-typedef vector<list<double>> inputMatrix;
+typedef vector<list<int>> inputMatrix;
 typedef vector<double> diagonalMatrix;
 
 namespace MatrixBuilder {
@@ -27,6 +27,9 @@ namespace MatrixBuilder {
     CSR buildD(inputMatrix &W);
 
     CSR convertInputMatrixToCsr(inputMatrix W);
+
+    void printAVector(vector<double>& V, char* msg);
+    void printVector(vector<int>& V, char* msg);
 
     CSR createIdentity(int size);
 

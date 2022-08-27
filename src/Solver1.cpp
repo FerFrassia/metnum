@@ -8,6 +8,7 @@ void Solver1::read(std::string input) {
 //    inputGraph->print();
     inputMatrix inputGraph = MatrixBuilder::buildW(input);
     MatrixBuilder::printInputMatrix(inputGraph);
+    MatrixBuilder::convertInputMatrixToCsr(inputGraph);
 
     // eliminacion sin pivoteo
 //    for(i=1;i<n;i++)
