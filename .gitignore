@@ -1,6 +1,8 @@
 CMakeFiles/
 cmake_install.cmake
+cmake-build-debug/
 CMakeCache.txt
 MakeFile
 tp1
 .DS_Store
+.idea
