@@ -66,6 +66,16 @@ grados: [3 3 3 3 0]
 [4]: [1] -> [2] -> [3]
 [5]: [1] -> [2] -> [3] -> [4]
 
+[1]: [0] -> [2] -> [3] -> [4]
+
+[2]:
+
+[3]: [1] -> [4]
+
+[4]: [1] -> [2] -> [3]
+
+[5]: [1] -> [2] -> [3] -> [4]
+
 
 Vamos a usar map<int, map<int, int>> para la matriz W, pagamos el costo incial y listo
 Para almacenar los grados, vamos leyendo y sumando en un vector donde cada columna es el grado
