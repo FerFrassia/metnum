@@ -28,11 +28,13 @@ namespace MatrixBuilder {
 
     InputMatrix buildW(string file);
 
+    diagonalMatrix buildD(InputMatrix &W);
+
     void printInputMatrix(InputMatrix &input);
 
-    CSR buildD(InputMatrix &W);
+    void printCSR(CSR &input);
 
-    CSR convertInputMatrixToCsr(InputMatrix W);
+    CSR convertInputMatrixToCsr(InputMatrix &W);
 
     void printAVector(vector<double>& V, char* msg);
     void printVector(vector<int>& V, char* msg);
@@ -45,7 +47,7 @@ namespace MatrixOperator {
 
     CSR multiply(InputMatrix &W, diagonalMatrix &D);
 
-    CSR scale(CSR &WD, int p);
+    CSR scale(CSR &WD, double s);
 
     CSR add(CSR &A, CSR &B);
 

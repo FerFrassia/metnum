@@ -2,12 +2,27 @@
 #include "Matrix.h"
 #include <iostream>
 
-void Solver1::read(std::string input) {
+using namespace MatrixBuilder;
+using namespace MatrixOperator;
+
+void Solver1::read(std::string input, double p) {
     std::cout << "Leyendo archivo: " << input << std::endl;
-//    Matrix *inputGraph = new Matrix(input);
-//    inputGraph->print();
-    InputMatrix inputGraph = MatrixBuilder::buildW(input);
-    MatrixBuilder::printInputMatrix(inputGraph);
+
+    InputMatrix w = buildW(input);
+    diagonalMatrix d = buildD(w);
+    CSR wd = multiply(w, d);
+
+    printInputMatrix(w);
+    char msg[] = "D: ";
+    printAVector(d, msg);
+    printf("W*D: \n");
+    printCSR(wd);
+
+    CSR pwd = scale(wd, p);
+    printf("pWD: \n");
+    printCSR(pwd);
+
+
 //    MatrixBuilder::convertInputMatrixToCsr(inputGraph);
 
     // eliminacion sin pivoteo

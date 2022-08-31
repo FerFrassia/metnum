@@ -5,6 +5,7 @@
 #include <sstream>
 
 using namespace std;
+using namespace MatrixBuilder;
 
 namespace MatrixBuilder {
 
@@ -81,50 +82,57 @@ namespace MatrixBuilder {
         printGrades(input.grade);
     }
 
-    CSR buildD(InputMatrix &W) {
+    extern void printCSR(CSR &input) {
+        printf("CSR : \n");
 
+        char msgA[] = "A: ";
+        printAVector(input.A, msgA);
+        printf("\n");
+
+        char msgJA[] = "JA: ";
+        printVector(input.JA, msgJA);
+        printf("\n");
+
+        char msgIA[] = "IA: ";
+        printVector(input.IA, msgIA);
+        printf("\n");
     }
 
-    CSR convertInputMatrixToCsr(InputMatrix W) {
-        coordinateList graph = W.graph;
-        int m = graph.size();
+    diagonalMatrix buildD(InputMatrix &W) {
+        diagonalMatrix D(W.grade.size());
+        for (int i = 0; i < D.size(); ++i) {
+            D[i] = double(W.grade[i]) == 0 ? 0 : 1 / double(W.grade[i]);
+        }
+        return D;
+    }
+
+    CSR convertInputMatrixToCsr(InputMatrix &W) {
+        /*prints de debug
+        printf("about to convert input matrix: \n");
+        printInputMatrix(W);
+        */
+
         CSR result;
-//        vi A;
-//        vi IA = { 0 }; // IA matrix has N+1 rows
-//        vi JA;
-        int NNZ, i = 0;
-
-
-        for (i = 0; i < m; i++) {
-            int n = graph[i].size();
-            list<int>::iterator it;
-            int j = 0;
-//            for (it = W[i].begin(); it != W[i].end(); ++it) {
-//                int rowInJColumn = *it;
-////                if (W[i][j] != 0) {
-//                    result.A.push_back(rowInJColumn);
-//                    result.JA.push_back(j);
-//
-//                    // Count Number of Non Zero
-//                    // Elements in row i
-//                    j++;
-//                    NNZ++;
-////                }
-//            }
-            result.IA.push_back(NNZ);
+        int ia_i = 0;
+        for (int i = 0; i < W.grade.size(); ++i) { //esto se puede escribir con un iterador, y el siguiente acceso es O(1) en lugar de O(logn), pero hace falta que todas las claves estén definidas en el primer map, aunque sea con un map vacío asociado.
+            if (W.graph.find(i) != W.graph.end()) {
+                for (map<int, double>::iterator referencingIterator = W.graph[i].begin(); referencingIterator != W.graph[i].end(); ++referencingIterator) {
+                    result.A.push_back(referencingIterator->second);
+                    result.JA.push_back(referencingIterator->first);
+                    ia_i+= 1;
+                }
+            }
+            result.IA.push_back(ia_i);
         }
 
-//        printMatrix(M);
-//        printAVector(result.A, (char*)"A = ");
-//        printVector(result.JA, (char*)"JA = ");
-//        printVector(result.IA, (char*)"IA = ");
+        return result;
     }
 
     void printAVector(vector<double>& V, char* msg)
     {
 
         cout << msg << "[ ";
-        for_each(V.begin(), V.end(), [](int a) {
+        for_each(V.begin(), V.end(), [](double a) {
             cout << a << " ";
         });
         cout << "]" << endl;
@@ -148,12 +156,22 @@ namespace MatrixBuilder {
 
 namespace MatrixOperator {
 
-    CSR multiply(InputMatrix &W, InputMatrix &D) {
-
+    CSR multiply(InputMatrix &W, diagonalMatrix &D) {
+        for (map<int, map<int, double>>::iterator referencedIter = W.graph.begin(); referencedIter != W.graph.end(); ++referencedIter) {
+            int referencedPage = referencedIter->first;
+            for (map<int, double>::iterator referencingIter = referencedIter->second.begin(); referencingIter != referencedIter->second.end(); ++referencingIter) {
+                int referencingPage = referencingIter->first;
+                W.graph[referencedPage][referencingPage] = D[referencingPage];
+            }
+        }
+        return convertInputMatrixToCsr(W);
     }
 
-    CSR scale(CSR &M, int s) {
-
+    CSR scale(CSR &M, double s) {
+        for (int i = 0; i < M.A.size(); ++i) {
+            M.A[i] = M.A[i] * s;
+        }
+        return M;
     }
 
     CSR add(CSR &A, CSR &B) {
