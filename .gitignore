@@ -6,3 +6,4 @@ MakeFile
 tp1
 .DS_Store
 .idea
+src/cpp/build
