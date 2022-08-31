@@ -1,18 +1,24 @@
 #include "test_create_matrix.h"
+#include <iostream>
+#include <filesystem>
+
+using namespace std;
 
 
 void RunAllTestsForCreateMatrix(){
-    TestFileWithNoLinksReturnsEmptyMatrix();
-    TestFileWithNoLinksReturnsEmptyGrades();
-    TestUnorderedInputIsOrderedByMatrix();
-//    TestCatedraAleatorioMatrixParsedCorrectly();
+    filesystem::path currentPath = filesystem::current_path();
+    string resourcesDirectory = currentPath.generic_string() + "/../enunciado/tests/";
+
+    TestFileWithNoLinksReturnsEmptyMatrix(resourcesDirectory);
+    TestFileWithNoLinksReturnsEmptyGrades(resourcesDirectory);
+    TestUnorderedInputIsOrderedByMatrix(resourcesDirectory);
 }
 
-void TestFileWithNoLinksReturnsEmptyMatrix(){
+void TestFileWithNoLinksReturnsEmptyMatrix(string resourcesDirectory){
     TEST
 
     given("An empty Connectivity Matrix")
-    InputMatrix inputGraph = MatrixBuilder::buildW("../../../enunciado/tests/test_sin_links.txt");
+    InputMatrix inputGraph = MatrixBuilder::buildW(resourcesDirectory + "test_sin_links.txt");
 
     then("Returned InputMatrix must be empty")
 
@@ -21,11 +27,11 @@ void TestFileWithNoLinksReturnsEmptyMatrix(){
     END_TEST
 }
 
-void TestFileWithNoLinksReturnsEmptyGrades(){
+void TestFileWithNoLinksReturnsEmptyGrades(string resourcesDirectory){
     TEST
 
     given("An empty Connectivity Matrix")
-    InputMatrix inputGraph = MatrixBuilder::buildW("../../../enunciado/tests/test_sin_links.txt");
+    InputMatrix inputGraph = MatrixBuilder::buildW(resourcesDirectory+ "test_sin_links.txt");
 
     then("Returned grades must be all 0")
 
@@ -38,11 +44,11 @@ void TestFileWithNoLinksReturnsEmptyGrades(){
     END_TEST
 }
 
-void TestUnorderedInputIsOrderedByMatrix(){
+void TestUnorderedInputIsOrderedByMatrix(string resourcesDirectory){
     TEST
 
     given("A non empty Connectivity Matrix")
-    InputMatrix inputGraph = MatrixBuilder::buildW("../../../enunciado/tests/test_aleatorio_desordenado.txt");
+    InputMatrix inputGraph = MatrixBuilder::buildW(resourcesDirectory + "test_aleatorio_desordenado.txt");
 
     then("Returned InputMatrix must be not empty")
 
@@ -84,57 +90,3 @@ void TestUnorderedInputIsOrderedByMatrix(){
 
     END_TEST
 }
-
-void TestCatedraAleatorioMatrixParsedCorrectly(){
-    TEST
-
-//    given("A list of cartesian points and a special point")
-//    Point point_of_interest = Point(2, 5, 1);
-//    Point closest = Point(2, 4, 3);
-//    Cluster cluster = {Point(7, 1, 3), Point(4, 2, 3), closest, Point(1, 1, 1)};
-//
-//    // when("Calling TransformPointsFromCartesianToPolar")
-//    Point result = Point(-1, -1, -1);
-//    // result = sweep::PopClosestVertexTo(cluster, point_of_interest);
-//
-//    then("The points should have their polar attributes loaded")
-//    assert(closest == result);
-
-    END_TEST
-}
-
-//void TestFindSweepStartingAngle1(){
-//    TEST
-//
-//    given("A list of angles")
-//    vector<Point> angles = {Point(0, 0, 0, 0, 0.2), Point(1, 0, 0, 0, 0.6), Point(2, 0, 0, 0, 1.7),
-//                            Point(3, 0, 0, 0, 1.9)};
-//
-//    // when("Calling FindMaxAngleSeparation")
-//    float starting_angle;
-//    // starting_angle = sweep::FindSweepStartingAngle(angles);
-//
-//    then("The points should have their polar attributes loaded")
-//    float expected = 1.15;
-//    assert(fequals(expected, starting_angle));
-//
-//    END_TEST
-//}
-
-//void TestFindSweepStartingAngle2(){
-//    TEST
-//
-//    given("A list of angles")
-//    vector<Point> angles = {Point(0, 0, 0, 0, 0.2), Point(1, 0, 0, 0, 0.6), Point(2, 0, 0, 0, 1.0),
-//                            Point(3, 0, 0, 0, 1.4)};
-//
-//    // when("Calling FindMaxAngleSeparation")
-//    float starting_angle;
-//    // starting_angle = sweep::FindSweepStartingAngle(angles);
-//
-//    then("The points should have their polar attributes loaded")
-//    float expected = 1.8;
-//    assert(fequals(expected, starting_angle));
-//
-//    END_TEST
-//}

@@ -57,11 +57,8 @@ namespace MatrixBuilder {
         for (unsigned long i = 0; i < graph.size(); ++i) {
             string page = "[" + to_string(i) + "]: ";
             map<int, double> m = graph[i];
-            for (unsigned long j = 0; j < m.size(); j++) {
-                page += + "[" + to_string(m[j]) + "]";
-                if (j < m.size() - 1) {
-                    page += " -> ";
-                }
+            for (map<int, double>::iterator iter = m.begin(); iter != m.end(); ++iter) {
+                page += + "[(" + to_string(iter->first) + ", " + to_string(iter->second) + ")] -> ";
             }
             cout << page + "\n" << endl;
         }
@@ -151,15 +148,15 @@ namespace MatrixBuilder {
 
 namespace MatrixOperator {
 
-    void multiply(CSR &W, CSR &D) {
+    CSR multiply(InputMatrix &W, InputMatrix &D) {
 
     }
 
-    void scale(CSR &M, int s) {
+    CSR scale(CSR &M, int s) {
 
     }
 
-    void add(CSR &A, CSR &B) {
+    CSR add(CSR &A, CSR &B) {
 
     }
 }

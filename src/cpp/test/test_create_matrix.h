@@ -6,9 +6,8 @@
 #include "../main/Matrix.h"
 
 void RunAllTestsForCreateMatrix();
-void TestFileWithNoLinksReturnsEmptyMatrix();
-void TestFileWithNoLinksReturnsEmptyGrades();
-void TestUnorderedInputIsOrderedByMatrix();
-void TestCatedraAleatorioMatrixParsedCorrectly();
+void TestFileWithNoLinksReturnsEmptyMatrix(string resourcesDirectory);
+void TestFileWithNoLinksReturnsEmptyGrades(string resourcesDirectory);
+void TestUnorderedInputIsOrderedByMatrix(string resourcesDirectory);
 
 #endif //METNUM_TEST_CREATE_MATRIX_H

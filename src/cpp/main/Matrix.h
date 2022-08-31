@@ -20,7 +20,6 @@ struct InputMatrix {
     vector<int> grade;
 };
 
-
 namespace MatrixBuilder {
 
     list<string> split(string originalString, char delim);
@@ -44,9 +43,10 @@ namespace MatrixBuilder {
 
 namespace MatrixOperator {
 
-    void multiply(CSR &W, CSR &D);
+    CSR multiply(InputMatrix &W, diagonalMatrix &D);
 
-    void scale(CSR &M, int s);
+    CSR scale(CSR &WD, int p);
 
-    void add(CSR &A, CSR &B);
+    CSR add(CSR &A, CSR &B);
+
 }
