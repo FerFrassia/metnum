@@ -118,12 +118,13 @@ namespace MatrixOperator {
     CSR subtractToIdentity(CSR &M) {
         CSR result;
         int n = M.IA.size();
+        int row_length = 0;
 
         for (int i = 0; i < n - 1; ++i) {
             int row_start = M.IA[i];
             int row_end = M.IA[i + 1];
-            int row_length = row_end - row_start + 1; // sumo 1 por el 1 aportado por la matriz identidad
-            while (row_start < i) {
+            row_length += row_end - row_start + 1; // sumo 1 por el 1 aportado por la matriz identidad
+            while (M.JA[row_start] < i && row_start < row_end) {
                 // agrego elementos de la matriz original, previos a la diagonal
                 result.A.push_back(-M.A[row_start]);
                 result.JA.push_back(M.JA[row_start]);
@@ -132,7 +133,7 @@ namespace MatrixOperator {
             // agrego elementos de la identidad
             result.A.push_back(1);
             result.JA.push_back(i);
-            while (row_start < row_end) {
+            while (i < M.JA[row_start] && row_start < row_end) {
                 // agrego elementos de la matriz original, posteriores a la diagonal
                 result.A.push_back(-M.A[row_start]);
                 result.JA.push_back(M.JA[row_start]);
