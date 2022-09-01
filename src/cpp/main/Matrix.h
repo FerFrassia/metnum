@@ -70,3 +70,7 @@ namespace MatrixPrinter {
     void printVvMatrix(vvMatrix &matrix);
 
 }
+
+namespace VectorOperator {
+    void normalize(vector<double> &v);
+}

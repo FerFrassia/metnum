@@ -185,7 +185,7 @@ namespace MatrixOperator {
     }
 
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier) {
-        for(int i = 0; i < M[row1].size(); i++) {
+        for(double i = 0; i < M[row1].size(); i++) {
             M[row1][i] -= M[row2][i] * multiplier;
         }
         augmentedColumn[row1] -= augmentedColumn[row2] * multiplier;
@@ -224,7 +224,7 @@ namespace MatrixPrinter {
             string page = "[" + to_string(i) + "]: ";
             map<int, double> m = graph[i];
             for (map<int, double>::iterator iter = m.begin(); iter != m.end(); ++iter) {
-                page += + "[(" + to_string(iter->first) + ", " + to_string(iter->second) + ")] -> ";
+                page += +"[(" + to_string(iter->first) + ", " + to_string(iter->second) + ")] -> ";
             }
             cout << page + "\n" << endl;
         }
@@ -263,7 +263,7 @@ namespace MatrixPrinter {
         printf("\n");
     }
 
-    void printAVector(vector<double>& V, char* msg) {
+    void printAVector(vector<double> &V, char *msg) {
         cout << msg << "[ ";
         for_each(V.begin(), V.end(), [](double a) {
             cout << a << " ";
@@ -271,7 +271,7 @@ namespace MatrixPrinter {
         cout << "]" << endl;
     }
 
-    void printVector(vector<int>& V, char* msg) {
+    void printVector(vector<int> &V, char *msg) {
 
         cout << msg << "[ ";
         for_each(V.begin(), V.end(), [](int a) {
@@ -296,4 +296,16 @@ namespace MatrixPrinter {
         }
     }
 
+}
+
+namespace VectorOperator {
+    void normalize(vector<double> &v) {
+        double sum = 0;
+        for (double i = 0; i < v.size(); ++i) {
+            sum += v[i];
+        }
+        for (double i = 0; i < v.size(); ++i) {
+            v[i] = v[i] / sum;
+        }
+    }
 }

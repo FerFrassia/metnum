@@ -5,6 +5,7 @@
 using namespace MatrixBuilder;
 using namespace MatrixOperator;
 using namespace MatrixPrinter;
+using namespace VectorOperator;
 
 void Solver1::read(std::string input, double p) {
     std::cout << "Leyendo archivo: " << input << std::endl;
@@ -33,6 +34,7 @@ void Solver1::read(std::string input, double p) {
     printVvMatrix(fullMatrix);
 
     vector<double> pageRank = calculatePageRank(fullMatrix);
+    normalize(pageRank);
     char resultMsg[] = "result: \n";
     printAVector(pageRank, resultMsg);
 
