@@ -1,11 +1,13 @@
 #include "Solver1.h"
 #include "Matrix.h"
+#include "IO.h"
 #include <iostream>
 
 using namespace MatrixBuilder;
 using namespace MatrixOperator;
 using namespace MatrixPrinter;
 using namespace VectorOperator;
+using namespace IO;
 
 void Solver1::read(std::string input, double p) {
     std::cout << "Leyendo archivo: " << input << std::endl;
@@ -37,6 +39,7 @@ void Solver1::read(std::string input, double p) {
     normalize(pageRank);
     char resultMsg[] = "result: \n";
     printAVector(pageRank, resultMsg);
+    writeOutResult(pageRank, p, input + ".out");
 
 //    MatrixBuilder::convertInputMatrixToCsr(inputGraph);
 
