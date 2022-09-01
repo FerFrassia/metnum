@@ -1,0 +1,8 @@
+# ninja log v5
+1	677	1661975203283608728	CMakeFiles/tp1.dir/src/cpp/main/main.cpp.o	8a0b49614ab8a007
+2	677	1661991096056813935	CMakeFiles/tp1.dir/src/cpp/main/Solver1.cpp.o	cecba6eb03e18ca4
+3	1112	1661991114044759437	CMakeFiles/tp1.dir/src/cpp/main/Matrix.cpp.o	439d117ba225393e
+1357	1433	1661975204042960516	tp1	70369389a5bc0bb
+3	763	1661991341693908873	CMakeFiles/tp1.dir/src/cpp/main/Solver1.cpp.o	cecba6eb03e18ca4
+5	1250	1661991342179740563	CMakeFiles/tp1.dir/src/cpp/main/Matrix.cpp.o	439d117ba225393e
+1250	1334	1661991342269045058	tp1	70369389a5bc0bb

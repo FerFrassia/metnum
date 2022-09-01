@@ -4,6 +4,7 @@
 
 using namespace MatrixBuilder;
 using namespace MatrixOperator;
+using namespace MatrixPrinter;
 
 void Solver1::read(std::string input, double p) {
     std::cout << "Leyendo archivo: " << input << std::endl;
@@ -21,6 +22,10 @@ void Solver1::read(std::string input, double p) {
     CSR pwd = scale(wd, p);
     printf("pWD: \n");
     printCSR(pwd);
+
+    CSR ipwd = subtractToIdentity(pwd);
+    printf("ipwd: \n");
+    printCSR(ipwd);
 
 
 //    MatrixBuilder::convertInputMatrixToCsr(inputGraph);

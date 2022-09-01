@@ -1,0 +1,202 @@
+## This file contains all the build statements describing the
+# compilation DAG.
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# 
+# Which is the root file.
+# =============================================================================
+
+# =============================================================================
+# Project: tp1
+# Configurations: 
+# =============================================================================
+
+#############################################
+# Minimal version of Ninja required by this file
+
+ninja_required_version = 1.5
+
+# =============================================================================
+# Include auxiliary files.
+
+
+#############################################
+# Include rules file.
+
+include CMakeFiles/rules.ninja
+
+# =============================================================================
+
+#############################################
+# Logical path to working directory; prefix for absolute paths.
+
+cmake_ninja_workdir = /Users/fer/Documents/Facultad/MetNum/TPs/metnum/
+# =============================================================================
+# Object build statements for EXECUTABLE target tp1
+
+
+#############################################
+# Order-only phony target for tp1
+
+build cmake_object_order_depends_target_tp1: phony || CMakeFiles/tp1.dir
+
+build CMakeFiles/tp1.dir/src/cpp/main/Solver1.cpp.o: CXX_COMPILER__tp1_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/main/Solver1.cpp || cmake_object_order_depends_target_tp1
+  DEP_FILE = CMakeFiles/tp1.dir/src/cpp/main/Solver1.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tp1.dir
+  OBJECT_FILE_DIR = CMakeFiles/tp1.dir/src/cpp/main
+
+build CMakeFiles/tp1.dir/src/cpp/main/Matrix.cpp.o: CXX_COMPILER__tp1_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/main/Matrix.cpp || cmake_object_order_depends_target_tp1
+  DEP_FILE = CMakeFiles/tp1.dir/src/cpp/main/Matrix.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tp1.dir
+  OBJECT_FILE_DIR = CMakeFiles/tp1.dir/src/cpp/main
+
+build CMakeFiles/tp1.dir/src/cpp/main/main.cpp.o: CXX_COMPILER__tp1_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/main/main.cpp || cmake_object_order_depends_target_tp1
+  DEP_FILE = CMakeFiles/tp1.dir/src/cpp/main/main.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tp1.dir
+  OBJECT_FILE_DIR = CMakeFiles/tp1.dir/src/cpp/main
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target tp1
+
+
+#############################################
+# Link the executable tp1
+
+build tp1: CXX_EXECUTABLE_LINKER__tp1_ CMakeFiles/tp1.dir/src/cpp/main/Solver1.cpp.o CMakeFiles/tp1.dir/src/cpp/main/Matrix.cpp.o CMakeFiles/tp1.dir/src/cpp/main/main.cpp.o
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tp1.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tp1
+  TARGET_PDB = tp1.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target tests
+
+
+#############################################
+# Order-only phony target for tests
+
+build cmake_object_order_depends_target_tests: phony || CMakeFiles/tests.dir
+
+build CMakeFiles/tests.dir/src/cpp/main/Solver1.cpp.o: CXX_COMPILER__tests_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/main/Solver1.cpp || cmake_object_order_depends_target_tests
+  DEP_FILE = CMakeFiles/tests.dir/src/cpp/main/Solver1.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tests.dir
+  OBJECT_FILE_DIR = CMakeFiles/tests.dir/src/cpp/main
+
+build CMakeFiles/tests.dir/src/cpp/main/Matrix.cpp.o: CXX_COMPILER__tests_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/main/Matrix.cpp || cmake_object_order_depends_target_tests
+  DEP_FILE = CMakeFiles/tests.dir/src/cpp/main/Matrix.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tests.dir
+  OBJECT_FILE_DIR = CMakeFiles/tests.dir/src/cpp/main
+
+build CMakeFiles/tests.dir/src/cpp/test/test_create_matrix.cpp.o: CXX_COMPILER__tests_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/test/test_create_matrix.cpp || cmake_object_order_depends_target_tests
+  DEP_FILE = CMakeFiles/tests.dir/src/cpp/test/test_create_matrix.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tests.dir
+  OBJECT_FILE_DIR = CMakeFiles/tests.dir/src/cpp/test
+
+build CMakeFiles/tests.dir/src/cpp/test/test_utils.cpp.o: CXX_COMPILER__tests_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/test/test_utils.cpp || cmake_object_order_depends_target_tests
+  DEP_FILE = CMakeFiles/tests.dir/src/cpp/test/test_utils.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tests.dir
+  OBJECT_FILE_DIR = CMakeFiles/tests.dir/src/cpp/test
+
+build CMakeFiles/tests.dir/src/cpp/test/test_runner.cpp.o: CXX_COMPILER__tests_ /Users/fer/Documents/Facultad/MetNum/TPs/metnum/src/cpp/test/test_runner.cpp || cmake_object_order_depends_target_tests
+  DEP_FILE = CMakeFiles/tests.dir/src/cpp/test/test_runner.cpp.o.d
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tests.dir
+  OBJECT_FILE_DIR = CMakeFiles/tests.dir/src/cpp/test
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target tests
+
+
+#############################################
+# Link the executable tests
+
+build tests: CXX_EXECUTABLE_LINKER__tests_ CMakeFiles/tests.dir/src/cpp/main/Solver1.cpp.o CMakeFiles/tests.dir/src/cpp/main/Matrix.cpp.o CMakeFiles/tests.dir/src/cpp/test/test_create_matrix.cpp.o CMakeFiles/tests.dir/src/cpp/test/test_utils.cpp.o CMakeFiles/tests.dir/src/cpp/test/test_runner.cpp.o
+  FLAGS = -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  OBJECT_DIR = CMakeFiles/tests.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests
+  TARGET_PDB = tests.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/fer/Documents/Facultad/MetNum/TPs/metnum && /usr/local/Cellar/cmake/3.24.1/bin/ccmake -S/Users/fer/Documents/Facultad/MetNum/TPs/metnum -B/Users/fer/Documents/Facultad/MetNum/TPs/metnum
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/fer/Documents/Facultad/MetNum/TPs/metnum && /usr/local/Cellar/cmake/3.24.1/bin/cmake --regenerate-during-build -S/Users/fer/Documents/Facultad/MetNum/TPs/metnum -B/Users/fer/Documents/Facultad/MetNum/TPs/metnum
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build rebuild_cache: phony CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Target aliases.
+
+# =============================================================================
+# Folder targets.
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/fer/Documents/Facultad/MetNum/TPs/metnum
+
+build all: phony tp1 tests
+
+# =============================================================================
+# Built-in targets
+
+
+#############################################
+# Re-run CMake if any of its inputs changed.
+
+build build.ninja: RERUN_CMAKE | /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeCInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeCXXInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeGenericSystem.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/AppleClang-C.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/AppleClang-CXX.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/Clang.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/GNU.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-AppleClang-C.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-AppleClang-CXX.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-Clang-C.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-Clang-CXX.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-Clang.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Darwin-Initialize.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Darwin.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.24.1/CMakeCCompiler.cmake CMakeFiles/3.24.1/CMakeCXXCompiler.cmake CMakeFiles/3.24.1/CMakeSystem.cmake CMakeLists.txt
+  pool = console
+
+
+#############################################
+# A missing CMake input file is not an error.
+
+build /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeCInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeCXXInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeGenericSystem.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/AppleClang-C.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/AppleClang-CXX.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/Clang.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Compiler/GNU.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-AppleClang-C.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-AppleClang-CXX.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-Clang-C.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-Clang-CXX.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Apple-Clang.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Darwin-Initialize.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/Darwin.cmake /usr/local/Cellar/cmake/3.24.1/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.24.1/CMakeCCompiler.cmake CMakeFiles/3.24.1/CMakeCXXCompiler.cmake CMakeFiles/3.24.1/CMakeSystem.cmake CMakeLists.txt: phony
+
+
+#############################################
+# Clean all the built files.
+
+build clean: CLEAN
+
+
+#############################################
+# Print all primary targets available.
+
+build help: HELP
+
+
+#############################################
+# Make the all target the default.
+
+default all

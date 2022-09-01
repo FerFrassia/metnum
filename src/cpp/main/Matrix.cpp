@@ -6,6 +6,8 @@
 
 using namespace std;
 using namespace MatrixBuilder;
+using namespace MatrixOperator;
+using namespace MatrixPrinter;
 
 namespace MatrixBuilder {
 
@@ -53,6 +55,99 @@ namespace MatrixBuilder {
         return result;
     }
 
+    diagonalMatrix buildD(InputMatrix &W) {
+        diagonalMatrix D(W.grade.size());
+        for (double i = 0; i < D.size(); ++i) {
+            D[i] = double(W.grade[i]) == 0 ? 0 : 1 / double(W.grade[i]);
+        }
+        return D;
+    }
+
+    CSR convertInputMatrixToCsr(InputMatrix &W) {
+        /*prints de debug
+        printf("about to convert input matrix: \n");
+        printInputMatrix(W);
+        */
+
+        CSR result;
+        int ia_i = 0;
+        for (double i = 0; i < W.grade.size(); ++i) { //esto se puede escribir con un iterador, y el siguiente acceso es O(1) en lugar de O(logn), pero hace falta que todas las claves estén definidas en el primer map, aunque sea con un map vacío asociado.
+            if (W.graph.find(i) != W.graph.end()) {
+                for (map<int, double>::iterator referencingIterator = W.graph[i].begin(); referencingIterator != W.graph[i].end(); ++referencingIterator) {
+                    result.A.push_back(referencingIterator->second);
+                    result.JA.push_back(referencingIterator->first);
+                    ia_i+= 1;
+                }
+            }
+            result.IA.push_back(ia_i);
+        }
+
+        return result;
+    }
+
+    vvMatrix convertCSRTovvMatrix(CSR &M) {
+        return vvMatrix();
+    }
+
+}
+
+namespace MatrixOperator {
+
+    CSR multiply(InputMatrix &W, diagonalMatrix &D) {
+        for (map<int, map<int, double>>::iterator referencedIter = W.graph.begin(); referencedIter != W.graph.end(); ++referencedIter) {
+            int referencedPage = referencedIter->first;
+            for (map<int, double>::iterator referencingIter = referencedIter->second.begin(); referencingIter != referencedIter->second.end(); ++referencingIter) {
+                int referencingPage = referencingIter->first;
+                W.graph[referencedPage][referencingPage] = D[referencingPage];
+            }
+        }
+        return convertInputMatrixToCsr(W);
+    }
+
+    CSR scale(CSR &M, double s) {
+        for (double i = 0; i < M.A.size(); ++i) {
+            M.A[i] = M.A[i] * s;
+        }
+        return M;
+    }
+
+    CSR add(CSR &A, CSR &B) {
+
+    }
+
+    CSR subtractToIdentity(CSR &M) {
+        CSR result;
+        int n = M.IA.size();
+
+        for (int i = 0; i < n - 1; ++i) {
+            int row_start = M.IA[i];
+            int row_end = M.IA[i + 1];
+            int row_length = row_end - row_start + 1; // sumo 1 por el 1 aportado por la matriz identidad
+            while (row_start < i) {
+                // agrego elementos de la matriz original, previos a la diagonal
+                result.A.push_back(-M.A[row_start]);
+                result.JA.push_back(M.JA[row_start]);
+                row_start++;
+            }
+            // agrego elementos de la identidad
+            result.A.push_back(1);
+            result.JA.push_back(i);
+            while (row_start < row_end) {
+                // agrego elementos de la matriz original, posteriores a la diagonal
+                result.A.push_back(-M.A[row_start]);
+                result.JA.push_back(M.JA[row_start]);
+                row_start++;
+            }
+            result.IA.push_back(row_length);
+        }
+
+        return result;
+    }
+
+}
+
+namespace MatrixPrinter {
+
     void printMatrixValues(coordinateList &graph) {
         cout << "Graph size: " << graph.size() << endl;
         for (unsigned long i = 0; i < graph.size(); ++i) {
@@ -98,39 +193,7 @@ namespace MatrixBuilder {
         printf("\n");
     }
 
-    diagonalMatrix buildD(InputMatrix &W) {
-        diagonalMatrix D(W.grade.size());
-        for (int i = 0; i < D.size(); ++i) {
-            D[i] = double(W.grade[i]) == 0 ? 0 : 1 / double(W.grade[i]);
-        }
-        return D;
-    }
-
-    CSR convertInputMatrixToCsr(InputMatrix &W) {
-        /*prints de debug
-        printf("about to convert input matrix: \n");
-        printInputMatrix(W);
-        */
-
-        CSR result;
-        int ia_i = 0;
-        for (int i = 0; i < W.grade.size(); ++i) { //esto se puede escribir con un iterador, y el siguiente acceso es O(1) en lugar de O(logn), pero hace falta que todas las claves estén definidas en el primer map, aunque sea con un map vacío asociado.
-            if (W.graph.find(i) != W.graph.end()) {
-                for (map<int, double>::iterator referencingIterator = W.graph[i].begin(); referencingIterator != W.graph[i].end(); ++referencingIterator) {
-                    result.A.push_back(referencingIterator->second);
-                    result.JA.push_back(referencingIterator->first);
-                    ia_i+= 1;
-                }
-            }
-            result.IA.push_back(ia_i);
-        }
-
-        return result;
-    }
-
-    void printAVector(vector<double>& V, char* msg)
-    {
-
+    void printAVector(vector<double>& V, char* msg) {
         cout << msg << "[ ";
         for_each(V.begin(), V.end(), [](double a) {
             cout << a << " ";
@@ -138,8 +201,7 @@ namespace MatrixBuilder {
         cout << "]" << endl;
     }
 
-    void printVector(vector<int>& V, char* msg)
-    {
+    void printVector(vector<int>& V, char* msg) {
 
         cout << msg << "[ ";
         for_each(V.begin(), V.end(), [](int a) {
@@ -148,33 +210,4 @@ namespace MatrixBuilder {
         cout << "]" << endl;
     }
 
-    CSR createIdentity(int size) {
-
-    }
-
-}
-
-namespace MatrixOperator {
-
-    CSR multiply(InputMatrix &W, diagonalMatrix &D) {
-        for (map<int, map<int, double>>::iterator referencedIter = W.graph.begin(); referencedIter != W.graph.end(); ++referencedIter) {
-            int referencedPage = referencedIter->first;
-            for (map<int, double>::iterator referencingIter = referencedIter->second.begin(); referencingIter != referencedIter->second.end(); ++referencingIter) {
-                int referencingPage = referencingIter->first;
-                W.graph[referencedPage][referencingPage] = D[referencingPage];
-            }
-        }
-        return convertInputMatrixToCsr(W);
-    }
-
-    CSR scale(CSR &M, double s) {
-        for (int i = 0; i < M.A.size(); ++i) {
-            M.A[i] = M.A[i] * s;
-        }
-        return M;
-    }
-
-    CSR add(CSR &A, CSR &B) {
-
-    }
 }

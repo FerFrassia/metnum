@@ -8,6 +8,7 @@ using namespace std;
 
 typedef map<int, map<int, double>> coordinateList;
 typedef vector<double> diagonalMatrix;
+typedef vector<vector<double>> vvMatrix;
 
 struct CSR {
     vector<double> A;
@@ -30,16 +31,9 @@ namespace MatrixBuilder {
 
     diagonalMatrix buildD(InputMatrix &W);
 
-    void printInputMatrix(InputMatrix &input);
-
-    void printCSR(CSR &input);
-
     CSR convertInputMatrixToCsr(InputMatrix &W);
 
-    void printAVector(vector<double>& V, char* msg);
-    void printVector(vector<int>& V, char* msg);
-
-    CSR createIdentity(int size);
+    vvMatrix convertCSRTovvMatrix(CSR &M);
 
 }
 
@@ -50,5 +44,21 @@ namespace MatrixOperator {
     CSR scale(CSR &WD, double s);
 
     CSR add(CSR &A, CSR &B);
+
+    CSR subtractToIdentity(CSR &M);
+
+    vvMatrix gaussianElimination(vvMatrix &M);
+
+}
+
+namespace MatrixPrinter {
+
+    void printInputMatrix(InputMatrix &input);
+
+    void printCSR(CSR &input);
+
+    void printAVector(vector<double>& V, char* msg);
+
+    void printVector(vector<int>& V, char* msg);
 
 }
