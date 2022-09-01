@@ -43,11 +43,17 @@ namespace MatrixOperator {
 
     CSR scale(CSR &WD, double s);
 
-    CSR add(CSR &A, CSR &B);
-
     CSR subtractToIdentity(CSR &M);
 
-    vvMatrix gaussianElimination(vvMatrix &M);
+    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn);
+
+    vector<double> createAugmentedColumn(int n);
+
+    double multiplyBy(vvMatrix &M, int x, int y, int index);
+
+    void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier);
+
+    vector<double> calculatePageRank(vvMatrix &M);
 
 }
 
@@ -60,5 +66,7 @@ namespace MatrixPrinter {
     void printAVector(vector<double>& V, char* msg);
 
     void printVector(vector<int>& V, char* msg);
+
+    void printVvMatrix(vvMatrix &matrix);
 
 }

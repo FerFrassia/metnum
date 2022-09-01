@@ -28,6 +28,14 @@ void Solver1::read(std::string input, double p) {
     printCSR(ipwd);
 
 
+    vvMatrix fullMatrix = convertCSRTovvMatrix(ipwd);
+    printf("fullMatrix: \n");
+    printVvMatrix(fullMatrix);
+
+    vector<double> pageRank = calculatePageRank(fullMatrix);
+    char resultMsg[] = "result: \n";
+    printAVector(pageRank, resultMsg);
+
 //    MatrixBuilder::convertInputMatrixToCsr(inputGraph);
 
     // eliminacion sin pivoteo

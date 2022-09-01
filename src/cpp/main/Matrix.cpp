@@ -34,7 +34,7 @@ namespace MatrixBuilder {
     /*
      * Usamos un map<int, map<int, double>> para ordenar. Podemos probar otra estructura despues
      */
-    extern InputMatrix buildW(string file) {
+    InputMatrix buildW(string file) {
         string line;
         ifstream myfile (file);
         InputMatrix result;
@@ -86,7 +86,28 @@ namespace MatrixBuilder {
     }
 
     vvMatrix convertCSRTovvMatrix(CSR &M) {
-        return vvMatrix();
+        vvMatrix result;
+        int n = M.IA.size() - 1;
+        for (int i = 0; i < n; ++i) {
+            vector<double> row;
+            int row_start = M.IA[i];
+            for (int j = 0; j < n; ++j) {
+
+                /*
+                 * Si la columna que me indica JA es la misma sobre la que voy a agregar en la matriz resultado, agreggo el valor de A.
+                 * Caso contrario agrego un 0
+                 */
+                if (M.JA[row_start] == j) {
+                    row.push_back(M.A[row_start]);
+                    row_start++;
+                } else {
+                    row.push_back(0);
+                }
+
+            }
+            result.push_back(row);
+        }
+        return result;
     }
 
 }
@@ -109,10 +130,6 @@ namespace MatrixOperator {
             M.A[i] = M.A[i] * s;
         }
         return M;
-    }
-
-    CSR add(CSR &A, CSR &B) {
-
     }
 
     CSR subtractToIdentity(CSR &M) {
@@ -145,6 +162,58 @@ namespace MatrixOperator {
         return result;
     }
 
+    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn) {
+        int n = M.size();
+
+        for(int i = 0; i < n - 1; i++) {
+            for(int j = i+1; j <= n - 1; j++) {
+                if(M[i][i] != 0) {
+                    double x = multiplyBy(M, i, j, i);
+                    substractRow(M, augmentedColumn, j, i, x);
+                }
+            }
+        }
+    }
+
+    vector<double> createAugmentedColumn(int n) {
+        vector<double> vect(n, 1);
+        return vect;
+    }
+
+    double multiplyBy(vvMatrix &M, int x, int y, int index) {
+        return M[y][index] / M[x][index];
+    }
+
+    void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier) {
+        for(int i = 0; i < M[row1].size(); i++) {
+            M[row1][i] -= M[row2][i] * multiplier;
+        }
+        augmentedColumn[row1] -= augmentedColumn[row2] * multiplier;
+    }
+
+    vector<double> calculatePageRank(vvMatrix &M) {
+        vector<double> augmentedColumn = createAugmentedColumn(M.size());
+        gaussianElimination(M, augmentedColumn);
+
+        int n = M.size();
+        vector<double> r(n);
+
+        for (int i = n - 1; i >= 0; i--) {
+            r[i] = augmentedColumn[i];
+            for (int j = n - 1; j > i; j--) {
+                r[i] = r[i] - r[j] * M[i][j];
+            }
+
+            if (M[i][i] != 0) {
+                r[i] /= M[i][i];
+            } else {
+                r[i] = 0; // ?
+            }
+        }
+
+        return r;
+    }
+
 }
 
 namespace MatrixPrinter {
@@ -173,7 +242,7 @@ namespace MatrixPrinter {
         cout << grades << endl;
     }
 
-    extern void printInputMatrix(InputMatrix &input) {
+    void printInputMatrix(InputMatrix &input) {
         printMatrixValues(input.graph);
         printGrades(input.grade);
     }
@@ -209,6 +278,22 @@ namespace MatrixPrinter {
             cout << a << " ";
         });
         cout << "]" << endl;
+    }
+
+    void printVvMatrix(vvMatrix &matrix) {
+        int n = matrix.size();
+        for (int i = 0; i < n; i++) {
+            cout << "[ ";
+            vector<double> row = matrix[i];
+            for (int j = 0; j < n; j++) {
+                cout << row[j];
+                if (j < n - 1) {
+                    cout << ", ";
+                } else {
+                    cout << " ]" << endl;
+                }
+            }
+        }
     }
 
 }
