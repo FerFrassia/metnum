@@ -44,6 +44,10 @@ namespace MatrixBuilder {
             vector<int> grades(numberOfPages);
             result.grade = grades;
 
+            for (int i=0; i<numberOfPages; ++i) {
+                result.graph[i] = map<int, double>();
+            }
+
             getline(myfile, line); //number of links
             while(getline(myfile, line)) {
                 addLink(result, line); //add each link

@@ -15,8 +15,7 @@ int main(int argc, char *argv[]) {
     double p = std::atof(argv[2]);
 
     Solver *instance = new Solver1();
-    instance->read(input, p);
-    instance->solve(p);
+    instance->solve(input, p);
     delete instance;
 
     return 0;

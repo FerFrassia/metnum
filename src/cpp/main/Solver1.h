@@ -2,7 +2,6 @@
 
 class Solver1 : public Solver {
     public:
-        void read(std::string input, double p);
-        void solve(double p);
+        void solve(std::string input, double p);
         virtual ~Solver1() { };
 };

@@ -9,8 +9,9 @@ using namespace MatrixPrinter;
 using namespace VectorOperator;
 using namespace IO;
 
-void Solver1::read(std::string input, double p) {
+void Solver1::solve(std::string input, double p) {
     std::cout << "Leyendo archivo: " << input << std::endl;
+    printf("Resolviendo con probabilidad: %f\n", p);
 
     InputMatrix w = buildW(input);
     diagonalMatrix d = buildD(w);
@@ -40,25 +41,4 @@ void Solver1::read(std::string input, double p) {
     char resultMsg[] = "result: \n";
     printAVector(pageRank, resultMsg);
     writeOutResult(pageRank, p, input + ".out");
-
-//    MatrixBuilder::convertInputMatrixToCsr(inputGraph);
-
-    // eliminacion sin pivoteo
-//    for(i=1;i<n;i++)
-//    {
-//        for(j=i+1;j<n;j++)
-//        {
-//            float f=mat[j][i]/mat[i][i];
-//            for(k=0;k<n+1;k++)
-//            {
-//                mat[j][k]=mat[j][k]-f*mat[i][k];
-//            }
-//        }
-//    }
-
-//    delete inputGraph;
-}
-
-void Solver1::solve(double p) {
-    printf("Resolviendo con probabilidad: %f\n", p);
 }
