@@ -4,8 +4,10 @@ cmake-build-debug/
 CMakeCache.txt
 MakeFile
 tp1
+tests
 .DS_Store
 .idea
+.cmake
 src/cpp/build
 Experiments/camino_largo_para_testear_p/
 Experiments/estrella_vs_clique/
