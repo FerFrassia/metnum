@@ -4,6 +4,8 @@ cmake-build-debug/
 CMakeCache.txt
 MakeFile
 tp1
+tests
 .DS_Store
 .idea
+.cmake
 src/cpp/build
