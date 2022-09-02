@@ -90,6 +90,6 @@ def generarTests(smallestSize, largestSize):
 	testEstrellaVsCiclo(smallestSize, largestSize)
 	testCaminoLargoParaTestearP(smallestSize, largestSize)
 
-generarTests(3, 5)
+generarTests(3, 1000)
 
 
