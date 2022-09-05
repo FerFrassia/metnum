@@ -1,4 +1,5 @@
 import os
+import config as c
 
 def generarCiclo(file, n):
     file.write(str(n) + "\n")
@@ -90,6 +91,6 @@ def generarTests(smallestSize, largestSize):
 	testEstrellaVsCiclo(smallestSize, largestSize)
 	testCaminoLargoParaTestearP(smallestSize, largestSize)
 
-generarTests(3, 1000)
+generarTests(c.minNodes, c.maxNodes)
 
 
