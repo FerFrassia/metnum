@@ -91,6 +91,4 @@ def generarTests(smallestSize, largestSize):
 	testEstrellaVsCiclo(smallestSize, largestSize)
 	testCaminoLargoParaTestearP(smallestSize, largestSize)
 
-generarTests(c.minNodes, c.maxNodes)
-
 

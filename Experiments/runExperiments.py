@@ -23,5 +23,3 @@ def runTests():
 	runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
 	runEstrellaVsClique()
 	runCaminoLargoParaTestearP()
-
-runTests()

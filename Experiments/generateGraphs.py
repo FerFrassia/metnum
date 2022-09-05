@@ -29,7 +29,5 @@ def generateCicloGraph():
 	plt.legend()
 	plt.show()
 
-
-
-
-generateCicloGraph()
+def generateGraphs():
+	generateCicloGraph()
