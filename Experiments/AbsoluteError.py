@@ -1,9 +1,14 @@
 import numpy as np
+import subprocess as sub
 
-def calculateAbsoluteError(filename):
-	y = []
+tests = ["test_15_segundos", "test_30_segundos", "test_aleatorio", "test_aleatorio_desordenado", "test_completo", "test_sin_links", "test_trivial"]
+
+result_dicc = {}
+
+def calculateAbsoluteError(filename, p):
+	sub.run("./tp1 ./enunciado/tests/" + filename + ".txt " + str(p), shell=True)
 	catedra = open("./enunciado/tests/" + filename + ".txt.out", "r")
-	propio = open("./enunciado/tests/" + filename + ".txt_propio.out", "r")
+	propio = open("./enunciado/tests/" + filename + ".txt.propio.out", "r")
 	err = 0
 	a = b = []
 	for l1, l2 in zip(catedra, propio):
@@ -11,6 +16,9 @@ def calculateAbsoluteError(filename):
 		b.append(float(l2))
 	
 	err = np.linalg.norm(np.array(a)-np.array(b))
-	print('El error absoluto es:' + str(err))
+	result_dicc[filename] = err
 
-calculateAbsoluteError("test_15_segundos")
+for test in tests:
+	prob = open("./enunciado/tests/" + test + ".txt.out", "r").readline()
+	print(str(prob))
+	calculateAbsoluteError(test, prob)
