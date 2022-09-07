@@ -337,10 +337,10 @@ namespace VectorOperator {
         for (int i = 0; i < res.size(); ++i) {
             res[i] -= x[i];
         }
-        return module(res);
+        return norm2(res);
     }
 
-    double module(vector<double> &v) {
+    double norm2(vector<double> &v) {
         double res;
         for (int i = 0; i < v.size(); ++i) {
             res += pow(v[i], 2);

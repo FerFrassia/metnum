@@ -78,5 +78,5 @@ namespace VectorOperator {
 
     double approximation(CSR &M, vector<double> &v);
 
-    double module(vector<double> &v);
+    double norm2(vector<double> &v);
 }

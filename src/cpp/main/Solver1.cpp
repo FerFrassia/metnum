@@ -43,5 +43,5 @@ void Solver1::solve(std::string input, double p) {
 
     char resultMsg[] = "result: \n";
     printAVector(pageRank, resultMsg);
-    writeOutResult(pageRank, p, input + "_propio" + ".out");
+    writeOutResult(pageRank, p, input + ".propio" + ".out");
 }
