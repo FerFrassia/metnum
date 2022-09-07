@@ -41,6 +41,8 @@ namespace MatrixOperator {
 
     CSR multiply(InputMatrix &W, diagonalMatrix &D);
 
+    vector<double> matrixVectorMultiplication(CSR &M, vector<double> &x);
+
     CSR scale(CSR &WD, double s);
 
     CSR subtractToIdentity(CSR &M);
@@ -73,4 +75,8 @@ namespace MatrixPrinter {
 
 namespace VectorOperator {
     void normalize(vector<double> &v);
+
+    double approximation(CSR &M, vector<double> &v);
+
+    double module(vector<double> &v);
 }

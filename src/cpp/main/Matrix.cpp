@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 using namespace MatrixBuilder;
@@ -188,6 +189,24 @@ namespace MatrixOperator {
         return M[y][index] / M[x][index];
     }
 
+    vector<double> matrixVectorMultiplication(CSR & M, vector<double> &x) {
+        vector<double> res;
+        int n = M.IA.size();
+
+        for (int i = 0; i < n - 1; ++i) {
+            int row_start = M.IA[i];
+            int row_end = M.IA[i + 1];
+            double current = 0;
+            while (row_start < row_end) {
+                current += M.A[row_start] * x[M.JA[row_start]];
+                row_start++;
+            }
+            res.push_back(current);
+        }
+
+        return res;
+    };
+
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier) {
         for(double i = 0; i < M[row1].size(); i++) {
             M[row1][i] -= M[row2][i] * multiplier;
@@ -311,5 +330,21 @@ namespace VectorOperator {
         for (double i = 0; i < v.size(); ++i) {
             v[i] = v[i] / sum;
         }
+    }
+
+    double approximation(CSR &M, vector<double> &x) {
+        vector<double> res = matrixVectorMultiplication(M, x);
+        for (int i = 0; i < res.size(); ++i) {
+            res[i] -= x[i];
+        }
+        return module(res);
+    }
+
+    double module(vector<double> &v) {
+        double res;
+        for (int i = 0; i < v.size(); ++i) {
+            res += pow(v[i], 2);
+        }
+        return sqrt(res);
     }
 }
