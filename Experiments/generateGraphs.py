@@ -21,7 +21,6 @@ def generateCicloGraph():
 
 	x = list(range(c.minNodes, c.maxNodes+1))
 	z = [1/z for z in range(c.minNodes, c.maxNodes+1)]
-	plt.title("Resultados en grafo ciclo")
 	plt.xlabel("Número de páginas")
 	plt.ylabel("Promedio de todos los rankings")
 	plt.plot(x, z, color="blue", label="Valor esperado")
