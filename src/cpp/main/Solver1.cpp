@@ -2,6 +2,8 @@
 #include "Matrix.h"
 #include "IO.h"
 #include <iostream>
+#include <fstream>
+#include <iostream>
 
 using namespace MatrixBuilder;
 using namespace MatrixOperator;
@@ -10,8 +12,23 @@ using namespace VectorOperator;
 using namespace IO;
 
 void Solver1::solve(std::string input, double p) {
-    //std::cout << "Leyendo archivo: " << input << std::endl;
+    std::cout << "Leyendo archivo: " << input << std::endl;
     //printf("Resolviendo con probabilidad: %f\n", p);
+
+    // Chequear tiene links
+    string line;
+    ifstream myfile (input);
+
+    getline(myfile, line); //number of pages
+    int numberOfPages = stoi(line);
+    getline(myfile, line); //number of links
+
+    if (stoi(line) == 0) {
+        double rank = double(1) / double(numberOfPages);
+        vector<double> res(numberOfPages, rank);
+        writeOutResult(res, p, input + ".propio.out");
+        return;
+    }
 
     InputMatrix w = buildW(input);
     diagonalMatrix d = buildD(w);
@@ -31,14 +48,19 @@ void Solver1::solve(std::string input, double p) {
     //printf("ipwd: \n");
     //printCSR(ipwd);
 
-
     vvMatrix fullMatrix = convertCSRTovvMatrix(ipwd);
     //printf("fullMatrix: \n");
     //printVvMatrix(fullMatrix);
 
     vector<double> pageRank = calculatePageRank(fullMatrix);
     normalize(pageRank);
+    
+    /* CALCULO APROXIMACION */
+    vector<double> aprox(1, approximation(ipwd, pageRank));
+    std::cout << aprox[0] << "\n";
+    writeOutResult(aprox, p, input + ".aprox.out");
+
     //char resultMsg[] = "result: \n";
     //printAVector(pageRank, resultMsg);
-    writeOutResult(pageRank, p, input + ".out");
+    // writeOutResult(pageRank, p, input + ".propio.out");
 }
