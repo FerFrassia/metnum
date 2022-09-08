@@ -26,6 +26,26 @@ def runCaminoLargoParaTestearP():
 	for i in range(c.minNodes, c.maxNodes+1):
 		sub.run("../tp1 ./camino_largo_para_testear_p/camino_largo_para_testear_p_" + str(i) + ".txt " + str(c.p), shell=True)
 
+def runPaginaTramposaGrafoInicial():
+	print("Corriendo test: Pagina tramposa, grafo inicial")
+	for i in range(1, c.repetitionsForCheaterTest+1):
+		sub.run("../tp1 ./pagina_tramposa/grafo_inicial/grafo_inicial_" + str(i) + ".txt " + str(c.p), shell=True)
+
+def runPaginaTramposaEstrellaFantasma():
+	print("Corriendo test: Pagina tramposa, estrella fantasma")
+	for i in range(1, c.repetitionsForCheaterTest+1):
+		sub.run("../tp1 ./pagina_tramposa/estrella_fantasma/estrella_fantasma_" + str(i) + ".txt " + str(c.p), shell=True)
+
+def runPaginaTramposaCliqueFantasma():
+	print("Corriendo test: Pagina tramposa, clique fantasma")
+	for i in range(1, c.repetitionsForCheaterTest+1):
+		sub.run("../tp1 ./pagina_tramposa/clique_fantasma/clique_fantasma_" + str(i) + ".txt " + str(c.p), shell=True)
+
+def runPaginaTramposaCortandoEnlaces():
+	print("Corriendo test: Pagina tramposa, cortando enlaces")
+	for i in range(1, c.repetitionsForCheaterTest+1):
+		sub.run("../tp1 ./pagina_tramposa/cortando_enlaces/cortando_enlaces_" + str(i) + ".txt " + str(c.p), shell=True)
+
 def runTests():
 	print("Corriendo tests")
 
@@ -33,5 +53,9 @@ def runTests():
 	runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
 	runEstrellaVsClique()
 	runCaminoLargoParaTestearP()
+	runPaginaTramposaGrafoInicial()
+	runPaginaTramposaEstrellaFantasma()
+	runPaginaTramposaCliqueFantasma()
+	runPaginaTramposaCortandoEnlaces()
 
 	print("Tests corridos")

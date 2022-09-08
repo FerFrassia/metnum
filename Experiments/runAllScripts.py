@@ -3,6 +3,6 @@ import config as c
 import runExperiments
 import generateGraphs
 
-generateExperiments.generarTests(c.minNodes, c.maxNodes)
+generateExperiments.generarTests()
 runExperiments.runTests()
 generateGraphs.generateGraphs()
