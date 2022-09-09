@@ -2,7 +2,7 @@ import json
 import numpy as np
 import subprocess as sub
 
-tests = ["test_15_segundos", "test_30_segundos","test_aleatorio", "test_aleatorio_desordenado", "test_completo", "test_sin_links", "test_trivial"]
+tests = ["test_15_segundos", "test_30_segundos", "test_aleatorio_desordenado", "test_completo", "test_sin_links", "test_trivial"]
 
 result_dict = {}
 
@@ -12,12 +12,16 @@ def calculateAbsoluteError(filename, p, runFile):
 	catedra = open("./enunciado/tests/" + filename + ".txt.out", "r")
 	propio = open("./enunciado/tests/" + filename + ".txt.propio.out", "r")
 	err = 0
-	a = b = []
+	a = []
+	b = []
 	for l1, l2 in zip(catedra, propio):
 		a.append(float(l1))
 		b.append(float(l2))
-	
-	err = np.linalg.norm(np.array(a)-np.array(b))
+
+	arr_propio = np.array(a)
+	arr_catedra = np.array(b)
+
+	err = np.linalg.norm(arr_propio-arr_catedra)
 	result_dict[filename] = err
 
 for test in tests:
