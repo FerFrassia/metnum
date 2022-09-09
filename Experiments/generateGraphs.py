@@ -45,15 +45,14 @@ def generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph():
 		y.append(results)
 
 	x = list(range(c.minNodes, c.maxNodes+1))
-	plt.title("Resultados en grafo estrella que apunta a un nodo con grado de salida 0")
 	plt.xlabel("Número de páginas")
-	plt.ylabel("")
+	plt.ylabel("Ranking")
 
 	lastPageRankings = [x[-1] for x in y]
-	plt.plot(x, lastPageRankings, label="Última página", color="green")
+	plt.plot(x, lastPageRankings, label="P2", color="blue")
 
 	secondToLastPageRankings = [x[-2] for x in y]
-	plt.plot(x, secondToLastPageRankings, label = "Centro de la estrella", color="red")
+	plt.plot(x, secondToLastPageRankings, label = "P1", color="red")
 
 	for i in range(c.minNodes, c.maxNodes+1):
 		currentPageRankings = [x[-i] for x in y if i<=len(x)]
@@ -61,6 +60,29 @@ def generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph():
 		plt.plot(x_i, currentPageRankings, color="black")
 
 	plt.plot()
+	plt.legend()
+	plt.show()
+
+def generateEstrellaVsCliqueGraph():
+	resultsVariandoEstrella = []
+	for i in range(c.minNodes, c.maxNodes+1):
+		file = open("./estrella_vs_clique/variando_estrella/estrella_vs_clique_" + str(i) + "_500.txt.out", "r")
+		lines = (file.readlines())[1:]
+		file.close()
+		resultsVariandoEstrella.append(float(lines[i-1]))
+
+	resultsVariandoClique = []
+	for i in range(c.minNodes, c.maxNodes+1):
+		file = open("./estrella_vs_clique/variando_clique/estrella_vs_clique_500_" + str(i) + ".txt.out", "r")
+		lines = (file.readlines())[1:]
+		file.close()
+		resultsVariandoClique.append(float(lines[500-1]))
+
+	x = list(range(c.minNodes, c.maxNodes+1))
+	plt.xlabel("Número de páginas")
+	plt.ylabel("Ranking de P1")
+	plt.plot(x, resultsVariandoEstrella, color="blue", label="Variando estrella")
+	plt.plot(x, resultsVariandoClique, color="red", label="Variando clique")
 	plt.legend()
 	plt.show()
 
@@ -96,7 +118,10 @@ def generatePaginaTramposaCortandoEnlacesGraph():
 def generateGraphs():
 	generateCicloGraph()
 	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
+	generateEstrellaVsCliqueGraph()
 	generatePaginaTramposaGrafoInicialGraph()
 	generatePaginaTramposaEstrellaFantasmaGraph()
 	generatePaginaTramposaCliqueFantasmaGraph()
 	generatePaginaTramposaCortandoEnlacesGraph()
+
+generateEstrellaVsCliqueGraph()
