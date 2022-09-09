@@ -17,7 +17,7 @@ namespace IO {
         streamObj << p;
         myfile << streamObj.str() + "\n";
         for (double element: v) {
-            myfile << to_string(element) + "\n";
+            myfile << element << "\n";
         }
         myfile.close();
     }

@@ -15,7 +15,7 @@ void Solver1::solve(std::string input, double p) {
     std::cout << "Leyendo archivo: " << input << std::endl;
     //printf("Resolviendo con probabilidad: %f\n", p);
 
-    // Chequear tiene links
+    // Chequear que el input tiene links
     string line;
     ifstream myfile (input);
 
@@ -24,9 +24,10 @@ void Solver1::solve(std::string input, double p) {
     getline(myfile, line); //number of links
 
     if (stoi(line) == 0) {
+        // matriz sin links
         double rank = double(1) / double(numberOfPages);
         vector<double> res(numberOfPages, rank);
-        writeOutResult(res, p, input + ".propio.out");
+        writeOutResult(res, p, input + ".out");
         return;
     }
 
@@ -56,11 +57,10 @@ void Solver1::solve(std::string input, double p) {
     normalize(pageRank);
     
     /* CALCULO APROXIMACION */
-    vector<double> aprox(1, approximation(ipwd, pageRank));
-    std::cout << aprox[0] << "\n";
-    writeOutResult(aprox, p, input + ".aprox.out");
+    //vector<double> aprox(1, approximation(ipwd, pageRank));
+    //writeOutResult(aprox, p, input + ".aprox.out");
 
-    //char resultMsg[] = "result: \n";
-    //printAVector(pageRank, resultMsg);
-    // writeOutResult(pageRank, p, input + ".propio.out");
+    // char resultMsg[] = "result: \n";
+    // printAVector(pageRank, resultMsg);
+    writeOutResult(pageRank, p, input + ".propio.out");
 }

@@ -10,6 +10,25 @@ using namespace MatrixBuilder;
 using namespace MatrixOperator;
 using namespace MatrixPrinter;
 
+double epsilon = pow(1, -10);
+
+double kahanSum(vector<double> &v)
+{
+    double sum = 0.0;
+ 
+    // Variable to store the error
+    double c = 0.0;
+ 
+    // Loop to iterate over the array
+    for(double n : v) {
+        double y = n - c;
+        double t = sum + y;
+        c = (t - sum) - y;
+        sum = t;
+    }
+    return sum;
+}
+
 namespace MatrixBuilder {
 
     list<string> split(string originalString, char delim) {
@@ -196,12 +215,12 @@ namespace MatrixOperator {
         for (int i = 0; i < n - 1; ++i) {
             int row_start = M.IA[i];
             int row_end = M.IA[i + 1];
-            double current = 0;
+            vector<double> sum_array;
             while (row_start < row_end) {
-                current += M.A[row_start] * x[M.JA[row_start]];
+                sum_array.push_back(M.A[row_start] * x[M.JA[row_start]]);
                 row_start++;
             }
-            res.push_back(current);
+            res.push_back(kahanSum(sum_array));
         }
 
         return res;
@@ -210,6 +229,10 @@ namespace MatrixOperator {
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier) {
         for(double i = 0; i < M[row1].size(); i++) {
             M[row1][i] -= M[row2][i] * multiplier;
+            if (abs(M[row1][i]) < epsilon) {
+                M[row1][i] = 0;
+                break;
+            }
         }
         augmentedColumn[row1] -= augmentedColumn[row2] * multiplier;
     }
@@ -225,10 +248,17 @@ namespace MatrixOperator {
             r[i] = augmentedColumn[i];
             for (int j = n - 1; j > i; j--) {
                 r[i] = r[i] - r[j] * M[i][j];
+                if (abs(r[i]) < epsilon) {
+                    r[i] = 0;
+                    break;
+                }
             }
 
             if (M[i][i] != 0) {
                 r[i] /= M[i][i];
+                if (r[i] < epsilon) {
+                    r[i] = 0;
+                }
             } else {
                 r[i] = 0; // ?
             }
@@ -323,10 +353,7 @@ namespace MatrixPrinter {
 
 namespace VectorOperator {
     void normalize(vector<double> &v) {
-        double sum = 0;
-        for (double i = 0; i < v.size(); ++i) {
-            sum += v[i];
-        }
+        double sum = kahanSum(v);
         for (double i = 0; i < v.size(); ++i) {
             v[i] = v[i] / sum;
         }
@@ -336,15 +363,20 @@ namespace VectorOperator {
         vector<double> res = matrixVectorMultiplication(M, x);
         for (int i = 0; i < res.size(); ++i) {
             res[i] -= x[i];
+            if (abs(res[i]) < epsilon) {
+                res[i] = 0;
+                break;
+            }
         }
         return norm2(res);
     }
 
     double norm2(vector<double> &v) {
-        double res;
+        vector<double> sum_array;
         for (int i = 0; i < v.size(); ++i) {
-            res += pow(v[i], 2);
+            sum_array.push_back(pow(v[i], 2));
         }
+        double res = kahanSum(sum_array);
         return sqrt(res);
     }
 }
