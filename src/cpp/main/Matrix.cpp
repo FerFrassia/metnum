@@ -10,7 +10,7 @@ using namespace MatrixBuilder;
 using namespace MatrixOperator;
 using namespace MatrixPrinter;
 
-double epsilon = pow(1, -10);
+double epsilon = pow(10, -6);
 
 double kahanSum(vector<double> &v)
 {
@@ -191,9 +191,11 @@ namespace MatrixOperator {
 
         for(int i = 0; i < n - 1; i++) {
             for(int j = i+1; j <= n - 1; j++) {
-                if(M[i][i] != 0) {
+                if(abs(M[i][i]) > epsilon) {
                     double x = multiplyBy(M, i, j, i);
                     substractRow(M, augmentedColumn, j, i, x);
+                } else {
+                    M[i][i] = double(0);
                 }
             }
         }
@@ -228,13 +230,14 @@ namespace MatrixOperator {
 
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier) {
         for(double i = 0; i < M[row1].size(); i++) {
-            M[row1][i] -= M[row2][i] * multiplier;
-            if (abs(M[row1][i]) < epsilon) {
-                M[row1][i] = 0;
-                break;
+            double subtrahend = M[row2][i] * multiplier;
+            if (abs(subtrahend) > epsilon) {
+                M[row1][i] -= subtrahend;
             }
         }
-        augmentedColumn[row1] -= augmentedColumn[row2] * multiplier;
+        if (abs(augmentedColumn[row2] * multiplier) > epsilon) {
+            augmentedColumn[row1] -= augmentedColumn[row2] * multiplier;
+        }
     }
 
     vector<double> calculatePageRank(vvMatrix &M) {
@@ -247,16 +250,16 @@ namespace MatrixOperator {
         for (int i = n - 1; i >= 0; i--) {
             r[i] = augmentedColumn[i];
             for (int j = n - 1; j > i; j--) {
-                r[i] = r[i] - r[j] * M[i][j];
-                if (abs(r[i]) < epsilon) {
-                    r[i] = 0;
-                    break;
+                double subtrahend = r[j] * M[i][j];
+                if (abs(subtrahend) > epsilon) {
+                    r[i] -= subtrahend;
                 }
             }
 
             if (M[i][i] != 0) {
-                r[i] /= M[i][i];
-                if (r[i] < epsilon) {
+                if (abs(r[i]) > epsilon) {
+                    r[i] /= M[i][i];
+                } else {
                     r[i] = 0;
                 }
             } else {
@@ -362,10 +365,8 @@ namespace VectorOperator {
     double approximation(CSR &M, vector<double> &x) {
         vector<double> res = matrixVectorMultiplication(M, x);
         for (int i = 0; i < res.size(); ++i) {
-            res[i] -= x[i];
-            if (abs(res[i]) < epsilon) {
-                res[i] = 0;
-                break;
+            if (abs(x[i]) > epsilon) {
+                res[i] -= x[i];
             }
         }
         return norm2(res);
