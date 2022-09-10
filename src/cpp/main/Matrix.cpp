@@ -10,8 +10,6 @@ using namespace MatrixBuilder;
 using namespace MatrixOperator;
 using namespace MatrixPrinter;
 
-double epsilon = pow(10, -6);
-
 double kahanSum(vector<double> &v)
 {
     double sum = 0.0;
