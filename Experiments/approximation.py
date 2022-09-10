@@ -6,10 +6,20 @@ f = plt.figure()
 f.set_figwidth(10)
 f.set_figheight(6)
 
-def runTests():
-	print("Corriendo test")
+def epsilonTests(eps):
+	print("Corriendo test epsilon")
+	for i in range(c.minNodes, c.maxNodes):
+	    sub.run("./tp1 " "aprox/epsilon/10-" + str(eps) + "/grafo_control_" + str(i) + ".txt " + str(c.p) + " " + str(eps), shell=True)
+
+def densityTests(path, filename):
+	print("Corriendo test densidad")
 	for i in range(c.minNodes, c.maxNodes):
 	    sub.run("./tp1 " + path + filename + str(i) + ".txt " + str(c.p), shell=True)
+
+def probabilityTests(p):
+	print("Corriendo test probabilidad")
+	for i in range(c.minNodes, c.maxNodes):
+	    sub.run("./tp1 " + "./aprox/" + "p" + str(int(p*100)) + "/grafo_ralo_" + str(i) + ".txt " + str(p), shell=True)
 
 def readApproximations(path, filename):
 	res = []
@@ -22,7 +32,7 @@ def readApproximations(path, filename):
 				res.append(float(line))
 	return res
 
-def generateGraph():
+def generateDensityGraph():
 	denso = readApproximations("./aprox/grafo_denso/", "grafo_denso_")
 	control = readApproximations("./aprox/grafo_control/", "grafo_control_")
 	ralo = readApproximations("./aprox/grafo_ralo/", "grafo_ralo_")
@@ -36,8 +46,43 @@ def generateGraph():
 	plt.legend()
 	plt.show()
 
-path = "./aprox/grafo_denso/"
-filename = "grafo_denso_"
+def generateProbabilityGraph():
+	p25 = readApproximations("./aprox/p25/", "grafo_denso_")
+	p50 = readApproximations("./aprox/p50/", "grafo_denso_")
+	p75 = readApproximations("./aprox/p75/", "grafo_denso_")
+	p90 = readApproximations("./aprox/p90/", "grafo_denso_")
 
-#runTests()
-generateGraph()
+	x = list(range(c.minNodes, c.maxNodes))
+	plt.xlabel("Número de páginas")
+	plt.ylabel("Error aproximado")
+	plt.plot(x, p25, color="red", label="prob: 25%")
+	plt.plot(x, p50, color="orange", label="prob: 50%")
+	plt.plot(x, p75, color="green", label="prob: 75%")
+	plt.plot(x, p90, color="blue", label="prob: 90%")
+	plt.legend()
+	plt.show()
+
+densities = ["grafo_denso", "grafo_control", "grafo_ralo"]
+probs = [0.25, 0.50, 0.75, 0.90]
+eps = [2, 3, 4, 5, 6]
+
+def runProbabilityTests():
+	for prob in probs:
+		probabilityTests(prob)
+
+def runDensityTests():
+	for density in densities:
+		path = "./aprox/" + density + "/"
+		filename = density + "_"
+		densityTests(path, filename)
+
+def runEpsilonTests():
+	for e in eps:
+		epsilonTests(e)
+
+runProbabilityTests()
+runDensityTests()
+runEpsilonTests()
+
+generateProbabilityGraph()
+generateDensityGraph()

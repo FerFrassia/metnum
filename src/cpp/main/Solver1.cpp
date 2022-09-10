@@ -11,9 +11,10 @@ using namespace MatrixPrinter;
 using namespace VectorOperator;
 using namespace IO;
 
-void Solver1::solve(std::string input, double p) {
+void Solver1::solve(std::string input, double p, double epsilon) {
     std::cout << "Leyendo archivo: " << input << std::endl;
     //printf("Resolviendo con probabilidad: %f\n", p);
+    printf("Resolviendo con epsilon: %f\n", epsilon);
 
     // Chequear que el input tiene links
     string line;
@@ -53,14 +54,14 @@ void Solver1::solve(std::string input, double p) {
     //printf("fullMatrix: \n");
     //printVvMatrix(fullMatrix);
 
-    vector<double> pageRank = calculatePageRank(fullMatrix);
+    vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
     normalize(pageRank);
     
     /* CALCULO APROXIMACION */
-    //vector<double> aprox(1, approximation(ipwd, pageRank));
-    //writeOutResult(aprox, p, input + ".aprox.out");
+    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
+    writeOutResult(aprox, p, input + ".aprox.out");
 
     // char resultMsg[] = "result: \n";
     // printAVector(pageRank, resultMsg);
-    writeOutResult(pageRank, p, input + ".propio.out");
+    //writeOutResult(pageRank, p, input + ".propio.out");
 }

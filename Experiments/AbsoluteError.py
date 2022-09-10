@@ -26,6 +26,6 @@ def calculateAbsoluteError(filename, p, runFile):
 
 for test in tests:
 	prob = open("./enunciado/tests/" + test + ".txt.out", "r").readline()
-	calculateAbsoluteError(test, prob, True)
+	calculateAbsoluteError(test, prob, False)
 	with open("./enunciado/tests/errores_absolutos.txt", 'w') as convert_file:
 		convert_file.write(json.dumps(result_dict))

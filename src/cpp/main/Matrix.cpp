@@ -16,10 +16,8 @@ double kahanSum(vector<double> &v)
 {
     double sum = 0.0;
  
-    // Variable to store the error
     double c = 0.0;
  
-    // Loop to iterate over the array
     for(double n : v) {
         double y = n - c;
         double t = sum + y;
@@ -88,14 +86,9 @@ namespace MatrixBuilder {
     }
 
     CSR convertInputMatrixToCsr(InputMatrix &W) {
-        /*prints de debug
-        printf("about to convert input matrix: \n");
-        printInputMatrix(W);
-        */
-
         CSR result;
         int ia_i = 0;
-        for (double i = 0; i < W.grade.size(); ++i) { //esto se puede escribir con un iterador, y el siguiente acceso es O(1) en lugar de O(logn), pero hace falta que todas las claves estén definidas en el primer map, aunque sea con un map vacío asociado.
+        for (double i = 0; i < W.grade.size(); ++i) {
             if (W.graph.find(i) != W.graph.end()) {
                 for (map<int, double>::iterator referencingIterator = W.graph[i].begin(); referencingIterator != W.graph[i].end(); ++referencingIterator) {
                     result.A.push_back(referencingIterator->second);
@@ -186,14 +179,14 @@ namespace MatrixOperator {
         return result;
     }
 
-    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn) {
+    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double epsilon) {
         int n = M.size();
 
         for(int i = 0; i < n - 1; i++) {
             for(int j = i+1; j <= n - 1; j++) {
                 if(abs(M[i][i]) > epsilon) {
                     double x = multiplyBy(M, i, j, i);
-                    substractRow(M, augmentedColumn, j, i, x);
+                    substractRow(M, augmentedColumn, j, i, x, epsilon);
                 } else {
                     M[i][i] = double(0);
                 }
@@ -228,7 +221,7 @@ namespace MatrixOperator {
         return res;
     };
 
-    void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier) {
+    void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier, double epsilon) {
         for(double i = 0; i < M[row1].size(); i++) {
             double subtrahend = M[row2][i] * multiplier;
             if (abs(subtrahend) > epsilon) {
@@ -240,9 +233,9 @@ namespace MatrixOperator {
         }
     }
 
-    vector<double> calculatePageRank(vvMatrix &M) {
+    vector<double> calculatePageRank(vvMatrix &M, double epsilon) {
         vector<double> augmentedColumn = createAugmentedColumn(M.size());
-        gaussianElimination(M, augmentedColumn);
+        gaussianElimination(M, augmentedColumn, epsilon);
 
         int n = M.size();
         vector<double> r(n);
@@ -362,7 +355,7 @@ namespace VectorOperator {
         }
     }
 
-    double approximation(CSR &M, vector<double> &x) {
+    double approximation(CSR &M, vector<double> &x, double epsilon) {
         vector<double> res = matrixVectorMultiplication(M, x);
         for (int i = 0; i < res.size(); ++i) {
             if (abs(x[i]) > epsilon) {
