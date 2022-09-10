@@ -1,0 +1,48 @@
+digraph {
+  node [shape=circle, style=filled]
+    1 [label="1", color=lightgrey,   width=1.28824]
+  2 [label="2", color=lightgrey,   width=0.99967]
+  3 [label="3", color=lightgrey,   width=1.02693]
+  4 [label="4", color=lightgrey,   width=1.02135]
+  5 [label="5", color=red,   width=1.08657]
+  6 [label="6", color=lightgrey,   width=0.91732]
+  7 [label="7", color=lightgrey,   width=0.94423]
+  8 [label="8", color=lightgrey,   width=0.74496]
+  9 [label="9", color=lightgrey,   width=0.98047]
+  10 [label="10", color=lightgrey, width=0.99025]
+
+  1 -> 2;
+  7 -> 4;
+  2 -> 3;
+  6 -> 7;
+  10 -> 5;
+  6 -> 10;
+  9 -> 2;
+  2 -> 10;
+  1 -> 7;
+  6 -> 8;
+  8 -> 6;
+  8 -> 2;
+  3 -> 8;
+  3 -> 1;
+  5 -> 1;
+  7 -> 5;
+  1 -> 9;
+  3 -> 10;
+  6 -> 9;
+  2 -> 7;
+  7 -> 6;
+  1 -> 4;
+  10 -> 4;
+  6 -> 1;
+  7 -> 3;
+  3 -> 5;
+  7 -> 9;
+  7 -> 10;
+  6 -> 3;
+  9 -> 6;
+  8 -> 9;
+  10 -> 3;
+  9 -> 5;
+  6 -> 4;
+}

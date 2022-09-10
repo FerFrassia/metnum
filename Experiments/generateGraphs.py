@@ -101,27 +101,30 @@ def obtainAverageResultsFor(path):
 			sumRankingForIPage += l[i]
 		averageResults.append(sumRankingForIPage/len(allResults))
 
-	return averageResults
+	return averageResults[4]
 
-def generatePaginaTramposaGrafoInicialGraph():
-	averageResults = obtainAverageResultsFor("./pagina_tramposa/grafo_inicial/grafo_inicial_")
 
-def generatePaginaTramposaEstrellaFantasmaGraph():
-	averageResults = obtainAverageResultsFor("./pagina_tramposa/estrella_fantasma/estrella_fantasma_")
-
-def generatePaginaTramposaCliqueFantasmaGraph():
-	averageResults = obtainAverageResultsFor("./pagina_tramposa/clique_fantasma/clique_fantasma_")
-
-def generatePaginaTramposaCortandoEnlacesGraph():
-	averageResults = obtainAverageResultsFor("./pagina_tramposa/cortando_enlaces/cortando_enlaces_")
+def generatePaginaTramposaBarPlot():
+	grafoInicialAvg = obtainAverageResultsFor("./pagina_tramposa/grafo_inicial/grafo_inicial_")
+	estrellaFantasmaAvg = obtainAverageResultsFor("./pagina_tramposa/estrella_fantasma/estrella_fantasma_")
+	cliqueFantasmaAvg = obtainAverageResultsFor("./pagina_tramposa/clique_fantasma/clique_fantasma_")
+	cortandoEnlacesAvg = obtainAverageResultsFor("./pagina_tramposa/cortando_enlaces/cortando_enlaces_")
+	data = {'Grafo Inicial': grafoInicialAvg, 'Cortando Enlaces': cortandoEnlacesAvg, 'Estrella Fantasma': estrellaFantasmaAvg, 'Clique Fantasma': cliqueFantasmaAvg}
+	courses = list(data.keys())
+	values = list(data.values())
+	
+	fig = plt.figure(figsize = (10, 5))
+	
+	# creating the bar plot
+	plt.bar(courses, values, color ='lightblue', width = 0.4)
+	
+	plt.xlabel("Estrategias")
+	plt.ylabel("Ranking")
+	plt.title("Ranking de nodo 5 variando estrategias")
+	plt.show()
 
 def generateGraphs():
 	generateCicloGraph()
 	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
 	generateEstrellaVsCliqueGraph()
-	generatePaginaTramposaGrafoInicialGraph()
-	generatePaginaTramposaEstrellaFantasmaGraph()
-	generatePaginaTramposaCliqueFantasmaGraph()
-	generatePaginaTramposaCortandoEnlacesGraph()
-
-generateEstrellaVsCliqueGraph()
+	generatePaginaTramposaBarPlot()
