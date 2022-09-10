@@ -10,7 +10,6 @@ int main(int argc, char *argv[]) {
 
     double eps = pow(10, -6);
     if (argc > 2) {
-        std::cout << "Pasaron epsilon por parametro\n";
         int coef = std::atof(argv[3]);
         eps = pow(10, -coef);
     }

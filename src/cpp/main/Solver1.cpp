@@ -63,5 +63,5 @@ void Solver1::solve(std::string input, double p, double epsilon) {
 
     // char resultMsg[] = "result: \n";
     // printAVector(pageRank, resultMsg);
-    //writeOutResult(pageRank, p, input + ".propio.out");
+    writeOutResult(pageRank, p, input + ".out");
 }
