@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <iostream>
+#include <chrono>
 
 using namespace MatrixBuilder;
 using namespace MatrixOperator;
@@ -11,10 +12,11 @@ using namespace MatrixPrinter;
 using namespace VectorOperator;
 using namespace IO;
 
-void Solver1::solve(std::string input, double p, double epsilon) {
+void Solver1::solve(std::string input, double p, double epsilon, bool measuringTime) {
     std::cout << "Leyendo archivo: " << input << std::endl;
-    //printf("Resolviendo con probabilidad: %f\n", p);
+    // printf("Resolviendo con probabilidad: %f\n", p);
     printf("Resolviendo con epsilon: %f\n", epsilon);
+    auto start = chrono::steady_clock::now();
 
     // Chequear que el input tiene links
     string line;
@@ -56,6 +58,11 @@ void Solver1::solve(std::string input, double p, double epsilon) {
 
     vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
     normalize(pageRank);
+    auto end = chrono::steady_clock::now();
+    auto dif = end - start;
+    if (measuringTime) {
+        writeTimeResult(dif.count(), input + ".timeMeasure.out");
+    }
     
     /* CALCULO APROXIMACION */
     vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));

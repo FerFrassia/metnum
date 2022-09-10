@@ -142,29 +142,29 @@ def generarGrafoDenso(file, n):
 		file.write(str(link[0]) + " " + str(link[1]) + "\n")
 		possibleLinks.remove(link)
 
-def testGrafoRalo(smallestSize, largestSize):
+def testGrafoRalo(sizes):
     print("Generando: Grafo Ralo")
     path = crearRuta("./grafo_ralo")
 
-    for n in range(smallestSize, largestSize + 1):
+    for n in sizes:
         output = open(path + "/grafo_ralo_" + str(n) + ".txt", "w")
         generarGrafoRalo(output, n)
         output.close()
 
-def testGrafoControl(smallestSize, largestSize):
+def testGrafoControl(sizes):
     print("Generando: Grafo Control")
     path = crearRuta("./grafo_control")
 
-    for n in range(smallestSize, largestSize + 1):
+    for n in sizes:
         output = open(path + "/grafo_control_" + str(n) + ".txt", "w")
         generarGrafoControl(output, n)
         output.close()
 
-def testGrafoDenso(smallestSize, largestSize):
+def testGrafoDenso(sizes):
     print("Generando: Grafo Denso")
     path = crearRuta("./grafo_denso")
 
-    for n in range(smallestSize, largestSize + 1):
+    for n in sizes:
         output = open(path + "/grafo_denso_" + str(n) + ".txt", "w")
         generarGrafoDenso(output, n)
         output.close()
@@ -292,13 +292,15 @@ def testPaginaTramposaCortandoEnlacesDeSalida():
 def generarTests():
     print("Generando tests")
 
+    timeExperimentGraphSizes = [8, 16, 32, 64, 128, 256, 512, 1024]
+
     testCiclo()
     testEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
     testEstrellaVsClique()
     testCaminoLargoParaTestearP()
-    testGrafoRalo(c.minNodes, c.maxNodes)
-    testGrafoControl(c.minNodes, c.maxNodes)
-    testGrafoDenso(c.minNodes, c.maxNodes)
+    testGrafoRalo(timeExperimentGraphSizes)
+    testGrafoControl(timeExperimentGraphSizes)
+    testGrafoDenso(timeExperimentGraphSizes)
     testPaginaTramposaGrafoInicial()
     testPaginaTramposaEstrellaFantasma()
     testPaginaTramposaCliqueFantasma()

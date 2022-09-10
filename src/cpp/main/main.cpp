@@ -8,17 +8,24 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    bool measuringTime = false;
     double eps = pow(10, -6);
-    if (argc > 2) {
-        int coef = std::atof(argv[3]);
-        eps = pow(10, -coef);
+    for (int i = 0; i < argc; i++) {
+        std::string currentArg = argv[i];
+        if (currentArg == "-t") {
+            measuringTime = true;
+        }
+        if (currentArg == "-e") {
+            int coef = std::atof(argv[i+1]);
+            eps = pow(10, -coef);
+        }
     }
 
     std::string input = argv[1];
     double p = std::atof(argv[2]);
 
     Solver *instance = new Solver1();
-    instance->solve(input, p, eps);
+    instance->solve(input, p, eps, measuringTime);
     delete instance;
 
     return 0;
