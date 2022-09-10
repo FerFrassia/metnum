@@ -7,7 +7,7 @@
 class Solver {
 public:
     Solver() { };
-    virtual void solve(std::string input, double p) = 0;
+    virtual void solve(std::string input, double p, double eps) = 0;
     virtual ~Solver() { };
 };
 

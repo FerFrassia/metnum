@@ -41,19 +41,21 @@ namespace MatrixOperator {
 
     CSR multiply(InputMatrix &W, diagonalMatrix &D);
 
+    vector<double> matrixVectorMultiplication(CSR &M, vector<double> &x);
+
     CSR scale(CSR &WD, double s);
 
     CSR subtractToIdentity(CSR &M);
 
-    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn);
+    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double eps);
 
     vector<double> createAugmentedColumn(int n);
 
     double multiplyBy(vvMatrix &M, int x, int y, int index);
 
-    void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier);
+    void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier, double eps);
 
-    vector<double> calculatePageRank(vvMatrix &M);
+    vector<double> calculatePageRank(vvMatrix &M, double eps);
 
 }
 
@@ -73,4 +75,8 @@ namespace MatrixPrinter {
 
 namespace VectorOperator {
     void normalize(vector<double> &v);
+
+    double approximation(CSR &M, vector<double> &v, double eps);
+
+    double norm2(vector<double> &v);
 }
