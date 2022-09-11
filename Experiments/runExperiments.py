@@ -21,10 +21,17 @@ def runEstrellaVsClique():
 	for i in range (c.minNodes, c.maxNodes+1):
 		sub.run("../tp1 ./estrella_vs_clique/variando_estrella/estrella_vs_clique_" + str(i) + "_" + str(fixedN) + ".txt " + str(c.p), shell=True)
 
-def runCaminoLargoParaTestearP():
-	print("Corriendo test: Camino largo para testear p")
-	for i in range(c.minNodes, c.maxNodes+1):
-		sub.run("../tp1 ./camino_largo_para_testear_p/camino_largo_para_testear_p_" + str(i) + ".txt " + str(c.p), shell=True)
+def runTestP():
+	print("Corriendo test: Test p")
+	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
+		sub.run("../tp1 ./testeo_p/grafo_1/grafo_1_testeo_p_" + str(p) + ".txt " + str(p/100), shell=True)
+
+	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
+		sub.run("../tp1 ./testeo_p/grafo_2/grafo_2_testeo_p_" + str(p) + ".txt " + str(p/100), shell=True)
 
 def runPaginaTramposaGrafoInicial():
 	print("Corriendo test: Pagina tramposa, grafo inicial")
@@ -49,13 +56,13 @@ def runPaginaTramposaCortandoEnlaces():
 def runTests():
 	print("Corriendo tests")
 
-	runCiclo()
-	runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
-	runEstrellaVsClique()
-	runCaminoLargoParaTestearP()
-	runPaginaTramposaGrafoInicial()
-	runPaginaTramposaEstrellaFantasma()
-	runPaginaTramposaCliqueFantasma()
-	runPaginaTramposaCortandoEnlaces()
+	#runCiclo()
+	#runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
+	#runEstrellaVsClique()
+	runTestP()
+	#runPaginaTramposaGrafoInicial()
+	#runPaginaTramposaEstrellaFantasma()
+	#runPaginaTramposaCliqueFantasma()
+	#runPaginaTramposaCortandoEnlaces()
 
 	print("Tests corridos")

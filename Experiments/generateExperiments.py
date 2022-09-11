@@ -91,14 +91,44 @@ def generarCaminoLargoParaTestearP(file, n):
     for page in range(1, n):
         file.write(str(page) + " " + str(page + 1) + "\n")
 
-def testCaminoLargoParaTestearP():
-    print("Generando: Camino largo para testear p")
-    path = crearRuta("./camino_largo_para_testear_p")
+def generarGrafo1TesteoP(file):
+    file.write("4\n")
+    file.write("3\n")
+    file.write("1 2\n")
+    file.write("3 2\n")
+    file.write("1 4\n")
 
-    for i in range(c.minNodes, c.maxNodes + 1):
-        output = open("./camino_largo_para_testear_p/camino_largo_para_testear_p_" + str(i) + ".txt", "w")
-        generarCaminoLargoParaTestearP(output, i)
+def generarGrafo2TesteoP(file):
+    file.write("6\n")
+    file.write("4\n")
+    file.write("1 2\n")
+    file.write("3 2\n")
+    file.write("1 4\n")
+    file.write("5 6\n")
+
+def testGrafo1P():
+    path = crearRuta("./testeo_p/grafo_1")
+    for p in range(c.minP, c.maxP*100+1):
+        if p == 0:
+            p = 0.01
+        output = open(path + "/grafo_1_testeo_p_" + str(p) + ".txt", "w")
+        generarGrafo1TesteoP(output)
         output.close()
+
+def testGrafo2P():
+    path = crearRuta("./testeo_p/grafo_2")
+    for p in range(c.minP, c.maxP*100+1):
+        if p == 0:
+            p = 0.01
+        output = open(path + "/grafo_2_testeo_p_" + str(p) + ".txt", "w")
+        generarGrafo2TesteoP(output)
+        output.close()
+
+def testP():
+    print("Generando: test p")
+    
+    testGrafo1P()
+    testGrafo2P()
 
 #Test: Grafos ralos, densos y de control
 def generarRandomLink(n):
@@ -292,17 +322,17 @@ def testPaginaTramposaCortandoEnlacesDeSalida():
 def generarTests():
     print("Generando tests")
 
-    testCiclo()
-    testEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
-    testEstrellaVsClique()
-    testCaminoLargoParaTestearP()
-    testGrafoRalo(c.minNodes, c.maxNodes)
-    testGrafoControl(c.minNodes, c.maxNodes)
-    testGrafoDenso(c.minNodes, c.maxNodes)
-    testPaginaTramposaGrafoInicial()
-    testPaginaTramposaEstrellaFantasma()
-    testPaginaTramposaCliqueFantasma()
-    testPaginaTramposaCortandoEnlacesDeSalida()
+    #testCiclo()
+    #testEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
+    #testEstrellaVsClique()
+    testP()
+    #testGrafoRalo(c.minNodes, c.maxNodes)
+    #testGrafoControl(c.minNodes, c.maxNodes)
+    #testGrafoDenso(c.minNodes, c.maxNodes)
+    #testPaginaTramposaGrafoInicial()
+    #testPaginaTramposaEstrellaFantasma()
+    #testPaginaTramposaCliqueFantasma()
+    #testPaginaTramposaCortandoEnlacesDeSalida()
 
     print("Tests generados")
 

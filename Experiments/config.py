@@ -1,6 +1,8 @@
 p = 0.5
 minNodes = 3
 maxNodes = 1000
+minP = 0
+maxP = 1
 
 cheaterGraphSize = 10
 cheaterPage = int(cheaterGraphSize/2)

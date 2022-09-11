@@ -86,6 +86,64 @@ def generateEstrellaVsCliqueGraph():
 	plt.legend()
 	plt.show()
 
+def generateGrafo1Graph():
+	results1 = []
+	results2 = []
+	results3 = []
+	results4 = []
+	for p in range(c.minP, c.maxP*100+1):
+		file = open("./testeo_p/grafo_1/grafo_1_testeo_p_" + str(p) + ".txt.out", "r")
+		lines = (file.readlines())[1:]
+		file.close()
+		results1.append(float(lines[0]))
+		results2.append(float(lines[1]))
+		results3.append(float(lines[2]))
+		results4.append(float(lines[3]))
+
+	x = [x/100 for x in range(c.minP, c.maxP*100+1)]
+	plt.xlabel("p")
+	plt.ylabel("Rankings")
+	plt.plot(x, results1, color="mediumblue", label="P1")
+	plt.plot(x, results2, color="cornflowerblue", label="P2")
+	plt.plot(x, results3, color="cyan", label="P3")
+	plt.plot(x, results4, color="lightblue", label="P4")
+	plt.legend()
+	plt.show()
+
+def generateGrafo2Graph():
+	results1 = []
+	results2 = []
+	results3 = []
+	results4 = []
+	results5 = []
+	results6 = []
+	for p in range(c.minP, c.maxP*100+1):
+		file = open("./testeo_p/grafo_2/grafo_2_testeo_p_" + str(p) + ".txt.out", "r")
+		lines = (file.readlines())[1:]
+		file.close()
+		results1.append(float(lines[0]))
+		results2.append(float(lines[1]))
+		results3.append(float(lines[2]))
+		results4.append(float(lines[3]))
+		results5.append(float(lines[4]))
+		results6.append(float(lines[5]))
+
+	x = [x/100 for x in range(c.minP, c.maxP*100+1)]
+	plt.xlabel("p")
+	plt.ylabel("Rankings")
+	plt.plot(x, results1, color="mediumblue", label="P1")
+	plt.plot(x, results2, color="cornflowerblue", label="P2")
+	plt.plot(x, results3, color="cyan", label="P3")
+	plt.plot(x, results4, color="lightblue", label="P4")
+	plt.plot(x, results5, color="red", label="P5")
+	plt.plot(x, results6, color="maroon", label="P6")
+	plt.legend()
+	plt.show()
+
+def generatePGraph():
+	generateGrafo1Graph()
+	generateGrafo2Graph()
+
 def obtainAverageResultsFor(path):
 	allResults = []
 	for i in range(1, c.repetitionsForCheaterTest+1):
@@ -124,7 +182,12 @@ def generatePaginaTramposaBarPlot():
 	plt.show()
 
 def generateGraphs():
-	generateCicloGraph()
-	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
-	generateEstrellaVsCliqueGraph()
-	generatePaginaTramposaBarPlot()
+	print("Generando gráficos")
+
+	#generateCicloGraph()
+	#generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
+	#generateEstrellaVsCliqueGraph()
+	generatePGraph()
+	#generatePaginaTramposaBarPlot()
+
+	print("Gráficos generados")
