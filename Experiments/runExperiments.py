@@ -68,7 +68,7 @@ def runGrafoControlParaTiempo(sizes):
 			sub.run("../tp1 ./grafo_control/grafo_control_" + str(i) + ".txt " + str(c.p) + " " + str(j), shell=True)
 
 def runGrafoDensoParaTiempo(sizes):
-	print("Corriendo test: grafo denso para medir tiempo"))
+	print("Corriendo test: grafo denso para medir tiempo")
 	for i in sizes:
 		for j in range(1, 6):
 			print("\tIteración " + str(j) + " de grafo tamaño " + str(i))

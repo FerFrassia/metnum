@@ -125,7 +125,7 @@ def testGrafo2P():
         output.close()
 
 def testP():
-    print("Generando: test p")
+    print("Generando: Test p")
     
     testGrafo1P()
     testGrafo2P()
