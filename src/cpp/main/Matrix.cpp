@@ -70,7 +70,7 @@ namespace MatrixBuilder {
             }
             myfile.close();
         } else {
-            cout << "unable to open file";
+            cout << "unable to open file: " << file << "\n";
         }
         return result;
     }
