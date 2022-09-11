@@ -1,0 +1,7 @@
+PROJECT(tp1)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8...3.13)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -std=c++17 -Wall -Wpedantic -Wextra -Wshadow -Wpointer-arith -Wcast-qual")
+SET(SOURCE_FILES src/cpp/main/Solver.h src/cpp/main/Solver1.cpp src/cpp/main/Matrix.cpp src/cpp/main/IO.cpp)
+SET(TEST_FILES src/cpp/test/test_create_matrix.h src/cpp/test/test_create_matrix.cpp src/cpp/test/test_utils.h src/cpp/test/test_utils.cpp)
+ADD_EXECUTABLE(tp1 ${SOURCE_FILES} src/cpp/main/main.cpp)
+ADD_EXECUTABLE(tests ${SOURCE_FILES} ${TEST_FILES} src/cpp/test/test_runner.cpp)
