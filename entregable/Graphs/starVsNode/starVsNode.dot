@@ -1,0 +1,17 @@
+digraph {
+  node [shape=circle, style=filled]
+  1 [label="", fillcolor=white]
+  2 [label="", fillcolor=white]
+  3 [label="", fillcolor=white]
+  4 [label="", fillcolor=white]
+  5 [label="", fillcolor=white]
+  6 [label="P1", fillcolor=red3]
+  7 [label="P2", fillcolor=dodgerblue]
+
+  1 -> 6;
+  2 -> 6;
+  3 -> 6;
+  4 -> 6;
+  5 -> 6;
+  6 -> 7;
+}
