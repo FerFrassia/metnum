@@ -355,7 +355,7 @@ namespace VectorOperator {
 
     double approximation(CSR &M, vector<double> &x, double epsilon) {
         vector<double> res = matrixVectorMultiplication(M, x);
-        for (int i = 0; i < res.size(); ++i) {
+        for (double i = 0; i < res.size(); ++i) {
             if (abs(x[i]) > epsilon) {
                 res[i] -= x[i];
             }
@@ -365,7 +365,7 @@ namespace VectorOperator {
 
     double norm2(vector<double> &v) {
         vector<double> sum_array;
-        for (int i = 0; i < v.size(); ++i) {
+        for (double i = 0; i < v.size(); ++i) {
             sum_array.push_back(pow(v[i], 2));
         }
         double res = kahanSum(sum_array);
