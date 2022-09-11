@@ -17,8 +17,19 @@ namespace IO {
         streamObj << p;
         myfile << streamObj.str() + "\n";
         for (double element: v) {
-            myfile << to_string(element) + "\n";
+            myfile << element << "\n";
         }
+        myfile.close();
+    }
+
+    void writeTimeResult(double timeDiff, string file) {
+        ostringstream streamObj;
+        streamObj << fixed;
+        streamObj << setprecision(2);
+        ofstream myfile;
+        myfile.open(file);
+        streamObj << timeDiff;
+        myfile << streamObj.str() + "\n";
         myfile.close();
     }
 }

@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import config as c
+import math
 
 def allElementsAreEqual(elements):
 	return all(x == elements[0] for x in elements)
@@ -181,13 +182,85 @@ def generatePaginaTramposaBarPlot():
 	plt.title("Ranking de nodo 5 variando estrategias")
 	plt.show()
 
+def readGraphResultsFor(graphName, sizesToIterate):
+	results = []
+	for n in sizesToIterate:
+		graphTotal = 0.0
+		for i in range(1, 6):
+			file = open("./" + graphName + "/" + graphName + "_" + str(n) + ".txt_" + str(i) + ".out", "r")
+			lines = file.readlines()
+			for line in lines:
+				graphTotal += float(line)
+
+		results.append(graphTotal/5)
+	return results
+
+def generateThreeGraphsComparedInSamePlot():
+	sizesToIterate = [8, 16, 32, 64, 128, 256, 512, 1024]
+	averagesGraphRalo = readGraphResultsFor("grafo_ralo", sizesToIterate)
+	averagesGraphControl = readGraphResultsFor("grafo_control", sizesToIterate)
+	averagesGraphDenso = readGraphResultsFor("grafo_denso", sizesToIterate)
+
+	x = list(range(3, 11))
+	plt.title("Resultados en tiempo ")
+	plt.xlabel("Cantidad de páginas (2^x)")
+	plt.ylabel("Tiempo (ms)")
+
+	plt.plot(x, averagesGraphRalo, color="blue", label="Promedios Grafo Ralo")
+	plt.plot(x, averagesGraphControl, color="red", label="Promedios Grafo Control")
+	plt.plot(x, averagesGraphDenso, color="green", label="Promedios Grafo Denso")
+
+	plt.plot()
+	plt.legend()
+	plt.show()
+
+def standardDeviationFor(graphName, sizesToIterate):
+	results = []
+	for n in sizesToIterate:
+		graphTotal = 0.0
+		graphTimes = []
+		for i in range(1, 6):
+			file = open("./" + graphName + "/" + graphName + "_" + str(n) + ".txt_" + str(i) + ".out", "r")
+			lines = file.readlines()
+			for line in lines:
+				timeTaken = float(line)
+				graphTotal += timeTaken
+				graphTimes.append(timeTaken)
+
+		mean = graphTotal/5	
+		timeSums = 0.0
+		for t in graphTimes:
+			timeSums += ((t - mean)**2)
+
+		results.append(math.sqrt(timeSums/5))
+	return results
+
+def generatePlotWithStandardDeviationFor(graphType, graphId):
+	sizesToIterate = [8, 16, 32, 64, 128]
+	graphAverages = readGraphResultsFor(graphId, sizesToIterate)
+	standardDeviations = standardDeviationFor(graphId, sizesToIterate)
+
+	x = list(range(3, 8))
+	plt.title("Tiempo tomado para Grafo " + graphType + " con desvío estándar")
+	plt.xlabel("Cantidad de páginas (2^x)")
+	plt.ylabel("Tiempo (ms)")
+
+	plt.errorbar(x, graphAverages, standardDeviations, linestyle='None', marker='^', capsize=3)
+	plt.legend()
+	plt.show()
+
 def generateGraphs():
 	print("Generando gráficos")
 
-	#generateCicloGraph()
-	#generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
-	#generateEstrellaVsCliqueGraph()
+	generateCicloGraph()
+	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
+	generateEstrellaVsCliqueGraph()
 	generatePGraph()
-	#generatePaginaTramposaBarPlot()
+	generatePaginaTramposaBarPlot()
+	generateThreeGraphsComparedInSamePlot()
+	generatePlotWithStandardDeviationFor("Ralo", "grafo_ralo")
+	generatePlotWithStandardDeviationFor("Control", "grafo_control")
+	generatePlotWithStandardDeviationFor("Denso", "grafo_denso")
 
 	print("Gráficos generados")
+

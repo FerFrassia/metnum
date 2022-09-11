@@ -53,16 +53,42 @@ def runPaginaTramposaCortandoEnlaces():
 	for i in range(1, c.repetitionsForCheaterTest+1):
 		sub.run("../tp1 ./pagina_tramposa/cortando_enlaces/cortando_enlaces_" + str(i) + ".txt " + str(c.p), shell=True)
 
+def runGrafoRaloParaTiempo(sizes):
+	print("Corriendo test: grafo ralo para medir tiempo")
+	for i in sizes:
+		for j in range(1, 6):
+			print("\tIteración " + str(j) + " de grafo tamaño " + str(i))
+			sub.run("../tp1 ./grafo_ralo/grafo_ralo_" + str(i) + ".txt " + str(c.p) + " " + str(j), shell=True)
+
+def runGrafoControlParaTiempo(sizes):
+	print("Corriendo test: grafo control para medir tiempo")
+	for i in sizes:
+		for j in range(1, 6):
+			print("\tIteración " + str(j) + " de grafo tamaño " + str(i))
+			sub.run("../tp1 ./grafo_control/grafo_control_" + str(i) + ".txt " + str(c.p) + " " + str(j), shell=True)
+
+def runGrafoDensoParaTiempo(sizes):
+	print("Corriendo test: grafo denso para medir tiempo"))
+	for i in sizes:
+		for j in range(1, 6):
+			print("\tIteración " + str(j) + " de grafo tamaño " + str(i))
+			sub.run("../tp1 ./grafo_denso/grafo_denso_" + str(i) + ".txt " + str(c.p) + " " + str(j), shell=True)
+
 def runTests():
 	print("Corriendo tests")
 
-	#runCiclo()
-	#runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
-	#runEstrellaVsClique()
+	timeExperimentGraphSizes = [8, 16, 32, 64, 128, 256, 512, 1024]
+
+	runCiclo()
+	runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
+	runEstrellaVsClique()
 	runTestP()
-	#runPaginaTramposaGrafoInicial()
-	#runPaginaTramposaEstrellaFantasma()
-	#runPaginaTramposaCliqueFantasma()
-	#runPaginaTramposaCortandoEnlaces()
+	runPaginaTramposaGrafoInicial()
+	runPaginaTramposaEstrellaFantasma()
+	runPaginaTramposaCliqueFantasma()
+	runPaginaTramposaCortandoEnlaces()
+	runGrafoRaloParaTiempo(timeExperimentGraphSizes)
+	runGrafoControlParaTiempo(timeExperimentGraphSizes)
+	runGrafoDensoParaTiempo(timeExperimentGraphSizes)
 
 	print("Tests corridos")
