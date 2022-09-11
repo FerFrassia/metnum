@@ -93,6 +93,8 @@ def generateGrafo1Graph():
 	results3 = []
 	results4 = []
 	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
 		file = open("./testeo_p/grafo_1/grafo_1_testeo_p_" + str(p) + ".txt.out", "r")
 		lines = (file.readlines())[1:]
 		file.close()
@@ -119,6 +121,8 @@ def generateGrafo2Graph():
 	results5 = []
 	results6 = []
 	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
 		file = open("./testeo_p/grafo_2/grafo_2_testeo_p_" + str(p) + ".txt.out", "r")
 		lines = (file.readlines())[1:]
 		file.close()
