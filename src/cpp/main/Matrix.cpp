@@ -112,7 +112,7 @@ namespace MatrixBuilder {
                  * Si la columna que me indica JA es la misma sobre la que voy a agregar en la matriz resultado, agreggo el valor de A.
                  * Caso contrario agrego un 0
                  */
-                if (M.JA[row_start] == j) {
+                if (M.JA[row_start] == j && row_start < M.IA[i+1]) {
                     row.push_back(M.A[row_start]);
                     row_start++;
                 } else {
