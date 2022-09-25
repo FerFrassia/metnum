@@ -125,6 +125,32 @@ namespace MatrixBuilder {
         return result;
     }
 
+    vlMatrix convertCSRTovlMatrix(CSR &M) {
+        vlMatrix result;
+        int n = M.IA.size() - 1;
+        for (int i = 0; i < n; ++i) {
+            list<tuple<int, double>> row;
+            int row_start = M.IA[i];
+            for (int j = 0; j < n; ++j) {
+
+                /*
+                 * Si la columna que me indica JA es la misma sobre la que voy a agregar en la matriz resultado, agreggo el valor de A.
+                 * Caso contrario agrego un 0
+                 */
+                if (M.JA[row_start] == j && row_start < M.IA[i+1]) {
+                    row.push_back(make_tuple(j, M.A[row_start]));
+//                    row.push_back(M.A[row_start]);
+                    row_start++;
+//                } else {
+//                    row.push_back(0);
+                }
+
+            }
+            result.push_back(row);
+        }
+        return result;
+    }
+
 }
 
 namespace MatrixOperator {
@@ -177,30 +203,6 @@ namespace MatrixOperator {
         return result;
     }
 
-    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double epsilon) {
-        int n = M.size();
-
-        for(int i = 0; i < n - 1; i++) {
-            for(int j = i+1; j <= n - 1; j++) {
-                if(abs(M[i][i]) > epsilon) {
-                    double x = multiplyBy(M, i, j, i);
-                    substractRow(M, augmentedColumn, j, i, x, epsilon);
-                } else {
-                    M[i][i] = double(0);
-                }
-            }
-        }
-    }
-
-    vector<double> createAugmentedColumn(int n) {
-        vector<double> vect(n, 1);
-        return vect;
-    }
-
-    double multiplyBy(vvMatrix &M, int x, int y, int index) {
-        return M[y][index] / M[x][index];
-    }
-
     vector<double> matrixVectorMultiplication(CSR & M, vector<double> &x) {
         vector<double> res;
         int n = M.IA.size();
@@ -218,6 +220,123 @@ namespace MatrixOperator {
 
         return res;
     };
+
+    void vlGaussianElimination(vlMatrix &M, vector<double> &augmentedColumn, double epsilon) {
+        int n = M.size();
+
+        for(int i = 0; i < n - 1; i++) {
+            row pivot = M[i];
+            for(int j = i+1; j <= n - 1; j++) {
+                row target = M[j];
+                double pivotColumnValue = findColumnValue(pivot, i);
+                if(abs(pivotColumnValue) > epsilon) {
+                    double x = vlMultiplyBy(target, i, pivotColumnValue);
+                    vlSubstractRow(pivot, target, augmentedColumn, n, j, i, x, epsilon);
+//                } else {
+//                    M[i][i] = double(0);
+                }
+            }
+        }
+    }
+
+    double findColumnValue(row &target, int j) {
+        row::iterator it;
+        for (it = target.begin(); it != target.end(); ++it) {
+            if (get<0>(*it) == j) {
+                return get<1>(*it);
+            }
+        }
+        return 0;
+    }
+
+    double vlMultiplyBy(row &target, int j, double pivotColumnValue) {
+        return findColumnValue(target, j) / pivotColumnValue;
+    }
+
+    void replaceColumnValue(row &target, int j, double subtrahend) {
+        row::iterator it;
+        for (it = target.begin(); it != target.end(); ++it) {
+            if (get<0>(*it) == j) {
+                 double originalValue = get<1>(*it);
+                 originalValue = originalValue - subtrahend;
+                 return;
+            }
+        }
+        // push back new
+    }
+
+    void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int targetRowIndex, int pivotRowIndex, double multiplier, double epsilon) {
+        row newTarget;
+        for(double i = 0; i < n; i++) {
+            double subtrahend = findColumnValue(pivot, i) * multiplier;
+            if (abs(subtrahend) > epsilon) {
+                double newValue = findColumnValue(target, i) - subtrahend;
+                replaceColumnValue()
+//                newTarget.push_back(make_tuple(i, newValue));
+//                M[row1][i] -= subtrahend;
+            }
+        }
+        if (abs(augmentedColumn[pivotRowIndex] * multiplier) > epsilon) {
+            augmentedColumn[targetRowIndex] -= augmentedColumn[pivotRowIndex] * multiplier;
+        }
+    }
+
+    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon) {
+        vector<double> augmentedColumn = createAugmentedColumn(M.size());
+        vlGaussianElimination(M, augmentedColumn, epsilon);
+
+        int n = M.size();
+        vector<double> r(n);
+
+        for (int i = n - 1; i >= 0; i--) {
+            r[i] = augmentedColumn[i];
+            for (int j = n - 1; j > i; j--) {
+                row r_i = M[i];
+                double subtrahend = r[j] * findColumnValue(r_i, j);
+                if (abs(subtrahend) > epsilon) {
+                    r[i] -= subtrahend;
+                }
+            }
+
+            row r_i = M[i];
+            double r_i_value = findColumnValue(r_i, i);
+            if (r_i_value != 0) {
+                if (abs(r[i]) > epsilon) {
+                    r[i] /= r_i_value;
+                } else {
+                    r[i] = 0;
+                }
+            } else {
+                r[i] = 0; // ?
+            }
+        }
+
+        return r;
+    }
+
+    vector<double> createAugmentedColumn(int n) {
+        vector<double> vect(n, 1);
+        return vect;
+    }
+
+    void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double epsilon) {
+        int n = M.size();
+
+        for(int i = 0; i < n - 1; i++) {
+            for(int j = i+1; j <= n - 1; j++) {
+                if(abs(M[i][i]) > epsilon) {
+                    double x = multiplyBy(M, i, j, i);
+                    substractRow(M, augmentedColumn, j, i, x, epsilon);
+                } else {
+                    M[i][i] = double(0);
+                }
+            }
+        }
+    }
+
+    double multiplyBy(vvMatrix &M, int x, int y, int index) {
+        return M[y][index] / M[x][index];
+    }
 
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier, double epsilon) {
         for(double i = 0; i < M[row1].size(); i++) {

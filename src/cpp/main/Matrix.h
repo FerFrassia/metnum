@@ -9,6 +9,8 @@ using namespace std;
 typedef map<int, map<int, double>> coordinateList;
 typedef vector<double> diagonalMatrix;
 typedef vector<vector<double>> vvMatrix;
+typedef list<tuple<int, double>> row;
+typedef vector<row> vlMatrix;
 
 struct CSR {
     vector<double> A;
@@ -35,6 +37,8 @@ namespace MatrixBuilder {
 
     vvMatrix convertCSRTovvMatrix(CSR &M);
 
+    vlMatrix convertCSRTovlMatrix(CSR &M);
+
 }
 
 namespace MatrixOperator {
@@ -46,6 +50,16 @@ namespace MatrixOperator {
     CSR scale(CSR &WD, double s);
 
     CSR subtractToIdentity(CSR &M);
+
+    void vlGaussianElimination(vlMatrix &M, vector<double> &augmentedColumn, double epsilon);
+
+    double findColumnValue(row &target, int j);
+
+    double vlMultiplyBy(row &target, int j, double pivotColumnValue);
+
+    void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int row1, int row2, double multiplier, double epsilon);
+
+    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon);
 
     void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double eps);
 

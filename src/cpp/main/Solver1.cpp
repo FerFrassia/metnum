@@ -53,10 +53,21 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
     //printCSR(ipwd);
 
     vvMatrix fullMatrix = convertCSRTovvMatrix(ipwd);
+    vlMatrix fullVlMatrix = convertCSRTovlMatrix(ipwd);
     //printf("fullMatrix: \n");
     //printVvMatrix(fullMatrix);
 
+    printf("STARTING ORIGINAL PAGE RANK\n");
     vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
+    printf("ENDING ORIGINAL PAGE RANK\n");
+    printf("STARTING NEW PAGE RANK\n");
+    vector<double> pageRankVl = calculatePageRankVl(fullVlMatrix, epsilon);
+    printf("ENDING NEW PAGE RANK\n");
+    for (int i = 0; i < pageRank.size(); i++) {
+        if (pageRank[i] != pageRankVl[i]) {
+            printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[i], pageRankVl[i]);
+        }
+    }
     normalize(pageRank);
     auto end = chrono::steady_clock::now();
     auto dif = end - start;
