@@ -258,10 +258,11 @@ namespace MatrixOperator {
         for (it = target.begin(); it != target.end(); ++it) {
             if (get<0>(*it) == j) {
                  double originalValue = get<1>(*it);
-                 originalValue = originalValue - subtrahend;
+                 *it = make_tuple(j, originalValue - subtrahend);
                  return;
             }
         }
+        target.push_back(make_tuple(j, -subtrahend));
         // push back new
     }
 
@@ -270,8 +271,8 @@ namespace MatrixOperator {
         for(double i = 0; i < n; i++) {
             double subtrahend = findColumnValue(pivot, i) * multiplier;
             if (abs(subtrahend) > epsilon) {
-                double newValue = findColumnValue(target, i) - subtrahend;
-                replaceColumnValue()
+//                double newValue = findColumnValue(target, i) - subtrahend;
+                replaceColumnValue(target, i, subtrahend);
 //                newTarget.push_back(make_tuple(i, newValue));
 //                M[row1][i] -= subtrahend;
             }
