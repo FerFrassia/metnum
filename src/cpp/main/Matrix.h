@@ -35,17 +35,23 @@ namespace MatrixBuilder {
 
     vvMatrix convertCSRTovvMatrix(CSR &M);
 
+    vvMatrix buildIdentity(int n);
 }
 
 namespace MatrixOperator {
 
     CSR multiply(InputMatrix &W, diagonalMatrix &D);
+    
+    void multiplyInPlace(InputMatrix &W, diagonalMatrix &D);
 
     vector<double> matrixVectorMultiplication(CSR &M, vector<double> &x);
+    vector<double> matrixVectorMultiplication(vvMatrix &M, vector<double> &x);
 
     CSR scale(CSR &WD, double s);
+    void scale(InputMatrix &WD, double s);
 
     CSR subtractToIdentity(CSR &M);
+    vvMatrix subtractToIdentity(InputMatrix &M);
 
     void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double eps);
 
@@ -77,6 +83,8 @@ namespace VectorOperator {
     void normalize(vector<double> &v);
 
     double approximation(CSR &M, vector<double> &v, double eps);
+
+    double approximation(vvMatrix &M, vector<double> &v, double eps);
 
     double norm2(vector<double> &v);
 }

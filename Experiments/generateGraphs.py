@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import config as c
 import math
+import random
+import os
+
 
 def allElementsAreEqual(elements):
 	return all(x == elements[0] for x in elements)
@@ -253,18 +256,52 @@ def generatePlotWithStandardDeviationFor(graphType, graphId):
 	plt.legend()
 	plt.show()
 
+def crearRuta(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
+
+def generarGrafo(file, n, cantLinks):
+	file.write(str(n) + "\n")
+	file.write(str(cantLinks) + "\n")
+
+	writtenLinks = []
+	for i in range(1, cantLinks+1):
+		link = generarRandomLink(n)
+		while link in writtenLinks:
+			link = generarRandomLink(n)
+		file.write(str(link[0]) + " " + str(link[1]) + "\n")
+		writtenLinks.append(link)
+
+def generarRandomLink(n):
+	possiblePages = [x for x in range(1,n+1)]
+	referencingPage = random.choice(possiblePages)
+	possiblePages.remove(referencingPage)
+	referencedPage = random.choice(possiblePages)
+	return (referencingPage, referencedPage)
+
+def generarGrafoRalo():
+	print("Generando: Grafo Ralo")
+	path = crearRuta("./grafo_ralo")
+	for n in range(c.minNodes, c.maxNodes):
+		output = open(path + "/grafo_ralo_" + str(n) + ".txt", "w")
+		generarGrafo(output, n, int(n*(n-1)*0.05))
+		output.close()
+
 def generateGraphs():
 	print("Generando gráficos")
 
-	generateCicloGraph()
-	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
-	generateEstrellaVsCliqueGraph()
-	generatePGraph()
-	generatePaginaTramposaBarPlot()
-	generateThreeGraphsComparedInSamePlot()
-	generatePlotWithStandardDeviationFor("Ralo", "grafo_ralo")
-	generatePlotWithStandardDeviationFor("Control", "grafo_control")
-	generatePlotWithStandardDeviationFor("Denso", "grafo_denso")
+	generarGrafoRalo()
+	#generateCicloGraph()
+	#generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
+	#generateEstrellaVsCliqueGraph()
+	#generatePGraph()
+	#generatePaginaTramposaBarPlot()
+	#generateThreeGraphsComparedInSamePlot()
+	#generatePlotWithStandardDeviationFor("Ralo", "grafo_ralo")
+	#generatePlotWithStandardDeviationFor("Control", "grafo_control")
+	#generatePlotWithStandardDeviationFor("Denso", "grafo_denso")
 
 	print("Gráficos generados")
 
+generateGraphs()

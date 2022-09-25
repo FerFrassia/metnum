@@ -12,6 +12,8 @@ using namespace MatrixPrinter;
 using namespace VectorOperator;
 using namespace IO;
 
+bool useCSR = true;
+
 void Solver1::solve(std::string input, double p, double epsilon, bool measuringTime) {
     std::cout << "Leyendo archivo: " << input << std::endl;
     // printf("Resolviendo con probabilidad: %f\n", p);
@@ -34,27 +36,33 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
         return;
     }
 
-    InputMatrix w = buildW(input);
-    diagonalMatrix d = buildD(w);
-    CSR wd = multiply(w, d);
-    
+    vvMatrix fullMatrix;
     //printInputMatrix(w);
     //char msg[] = "D: ";
     //printAVector(d, msg);
     //printf("W*D: \n");
     //printCSR(wd);
+    InputMatrix w = buildW(input);
+    diagonalMatrix d = buildD(w);
+    CSR ipwd;
 
-    CSR pwd = scale(wd, p);
-    //printf("pWD: \n");
-    //printCSR(pwd);
+    if (!useCSR) {
+        multiplyInPlace(w, d);
+        scale(w, p);
+        fullMatrix = subtractToIdentity(w);
+    }else {
+        CSR wd = multiply(w, d);
+        CSR pwd = scale(wd, p);
+        //printf("pWD: \n");
+        //printCSR(pwd);
 
-    CSR ipwd = subtractToIdentity(pwd);
-    //printf("ipwd: \n");
-    //printCSR(ipwd);
-
-    vvMatrix fullMatrix = convertCSRTovvMatrix(ipwd);
-    //printf("fullMatrix: \n");
-    //printVvMatrix(fullMatrix);
+        ipwd = subtractToIdentity(pwd);
+        //printf("ipwd: \n");
+        //printCSR(ipwd);
+        fullMatrix = convertCSRTovvMatrix(ipwd);
+        //printf("fullMatrix: \n");
+        //printVvMatrix(fullMatrix);
+    }
 
     vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
     normalize(pageRank);
@@ -65,7 +73,12 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
     }
     
     /* CALCULO APROXIMACION */
-    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
+    vector<double> aprox;
+    if (!useCSR) {
+        aprox.push_back(approximation(fullMatrix, pageRank, epsilon));
+    } else {
+        aprox.push_back(approximation(ipwd, pageRank, epsilon));
+    }
     writeOutResult(aprox, p, input + ".aprox.out");
 
     // char resultMsg[] = "result: \n";

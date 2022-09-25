@@ -125,6 +125,15 @@ namespace MatrixBuilder {
         return result;
     }
 
+    vvMatrix buildIdentity(int n) {
+        vvMatrix result;
+        for (int i = 0; i < n; i++){
+            vector<double> row(n, 0);
+            row[i] = 1;
+            result.push_back(row);
+        }
+        return result;
+    }
 }
 
 namespace MatrixOperator {
@@ -140,11 +149,32 @@ namespace MatrixOperator {
         return convertInputMatrixToCsr(W);
     }
 
+    void multiplyInPlace(InputMatrix &W, diagonalMatrix &D) {
+        for (map<int, map<int, double>>::iterator referencedIter = W.graph.begin(); referencedIter != W.graph.end(); ++referencedIter) {
+            int referencedPage = referencedIter->first;
+            for (map<int, double>::iterator referencingIter = referencedIter->second.begin(); referencingIter != referencedIter->second.end(); ++referencingIter) {
+                int referencingPage = referencingIter->first;
+                W.graph[referencedPage][referencingPage] = D[referencingPage];
+            }
+        }
+    }
+
     CSR scale(CSR &M, double s) {
         for (double i = 0; i < M.A.size(); ++i) {
             M.A[i] = M.A[i] * s;
         }
         return M;
+    }
+
+    void scale(InputMatrix &W, double s) {
+        for (map<int, map<int, double>>::iterator referencedIter = W.graph.begin(); referencedIter != W.graph.end(); ++referencedIter) {
+            int referencedPage = referencedIter->first;
+            for (map<int, double>::iterator referencingIter = referencedIter->second.begin(); referencingIter != referencedIter->second.end(); ++referencingIter) {
+                int referencingPage = referencingIter->first;
+                double value = W.graph[referencedPage][referencingPage];
+                W.graph[referencedPage][referencingPage] = (value * s);
+            }
+        }
     }
 
     CSR subtractToIdentity(CSR &M) {
@@ -172,6 +202,24 @@ namespace MatrixOperator {
                 row_start++;
             }
             result.IA.push_back(row_length);
+        }
+
+        return result;
+    }
+
+    vvMatrix subtractToIdentity(InputMatrix &W) {
+        int n = W.grade.size();
+        vvMatrix result = buildIdentity(n);
+
+        for (double i = 0; i < n; ++i) {
+            vector<double> row;
+            if (W.graph.find(i) != W.graph.end()) {
+                for (map<int, double>::iterator referencingIterator = W.graph[i].begin(); referencingIterator != W.graph[i].end(); ++referencingIterator) {
+                    int node = referencingIterator->first;
+                    double value = referencingIterator->second;
+                    result[i][node] = (-value);
+                }
+            }
         }
 
         return result;
@@ -212,6 +260,21 @@ namespace MatrixOperator {
             while (row_start < row_end) {
                 sum_array.push_back(M.A[row_start] * x[M.JA[row_start]]);
                 row_start++;
+            }
+            res.push_back(kahanSum(sum_array));
+        }
+
+        return res;
+    };
+
+    vector<double> matrixVectorMultiplication(vvMatrix & M, vector<double> &x) {
+        vector<double> res;
+        int n = M.size();
+
+        for (int i = 0; i < n; ++i) {
+            vector<double> sum_array;
+            for (int j = 0; j < n; j++) {
+                sum_array.push_back(M[i][j] * x[j]);
             }
             res.push_back(kahanSum(sum_array));
         }
@@ -351,6 +414,16 @@ namespace VectorOperator {
         for (double i = 0; i < v.size(); ++i) {
             v[i] = v[i] / sum;
         }
+    }
+
+    double approximation(vvMatrix &M, vector<double> &x, double epsilon) {
+        vector<double> res = matrixVectorMultiplication(M, x);
+        for (double i = 0; i < res.size(); ++i) {
+            if (abs(x[i]) > epsilon) {
+                res[i] -= x[i];
+            }
+        }
+        return norm2(res);
     }
 
     double approximation(CSR &M, vector<double> &x, double epsilon) {

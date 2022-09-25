@@ -46,6 +46,16 @@ def generateDensityGraph():
 	plt.legend()
 	plt.show()
 
+def generateSparseGraph():
+	ralo = readApproximations("./grafo_ralo/", "grafo_ralo_")
+
+	x = list(range(c.minNodes, c.maxNodes))
+	plt.xlabel("Número de páginas")
+	plt.ylabel("Error aproximado")
+	plt.plot(x, ralo, color="blue", label="grafo ralo")
+	plt.legend()
+	plt.show()
+
 def generateProbabilityGraph():
 	p25 = readApproximations("./aprox/p25/", "grafo_denso_")
 	p50 = readApproximations("./aprox/p50/", "grafo_denso_")
@@ -76,13 +86,20 @@ def runDensityTests():
 		filename = density + "_"
 		densityTests(path, filename)
 
+def runSparseTests():
+	path = "./grafo_ralo/"
+	filename = "grafo_ralo_"
+	densityTests(path, filename)
+
 def runEpsilonTests():
 	for e in eps:
 		epsilonTests(e)
 
-runProbabilityTests()
-runDensityTests()
-runEpsilonTests()
+#runProbabilityTests()
+#runDensityTests()
+#runEpsilonTests()
+runSparseTests()
 
-generateProbabilityGraph()
-generateDensityGraph()
+#generateProbabilityGraph()
+#generateDensityGraph()
+generateSparseGraph()
