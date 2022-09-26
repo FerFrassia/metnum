@@ -55,7 +55,6 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
         CSR pwd = scale(wd, p);
         //printf("pWD: \n");
         //printCSR(pwd);
-
         ipwd = subtractToIdentity(pwd);
         //printf("ipwd: \n");
         //printCSR(ipwd);

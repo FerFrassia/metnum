@@ -288,19 +288,37 @@ def generarGrafoRalo():
 		generarGrafo(output, n, int(n*(n-1)*0.05))
 		output.close()
 
+def generarGrafoDenso():
+	print("Generando: Grafo Denso")
+	path = crearRuta("./grafo_denso")
+	for n in range(c.minNodes, c.maxNodes):
+		output = open(path + "/grafo_denso_" + str(n) + ".txt", "w")
+		generarGrafo(output, n, int(n*(n-1)*0.9))
+		output.close()
+
+def generarGrafoControl():
+	print("Generando: Grafo Control")
+	path = crearRuta("./grafo_control")
+	for n in range(c.minNodes, c.maxNodes):
+		output = open(path + "/grafo_control_" + str(n) + ".txt", "w")
+		generarGrafo(output, n, int(n*(n-1)*0.4))
+		output.close()
+
 def generateGraphs():
 	print("Generando gráficos")
 
 	generarGrafoRalo()
-	#generateCicloGraph()
-	#generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
-	#generateEstrellaVsCliqueGraph()
-	#generatePGraph()
-	#generatePaginaTramposaBarPlot()
-	#generateThreeGraphsComparedInSamePlot()
-	#generatePlotWithStandardDeviationFor("Ralo", "grafo_ralo")
-	#generatePlotWithStandardDeviationFor("Control", "grafo_control")
-	#generatePlotWithStandardDeviationFor("Denso", "grafo_denso")
+	generarGrafoDenso()
+	generarGrafoControl()
+	generateCicloGraph()
+	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
+	generateEstrellaVsCliqueGraph()
+	generatePGraph()
+	generatePaginaTramposaBarPlot()
+	generateThreeGraphsComparedInSamePlot()
+	generatePlotWithStandardDeviationFor("Ralo", "grafo_ralo")
+	generatePlotWithStandardDeviationFor("Control", "grafo_control")
+	generatePlotWithStandardDeviationFor("Denso", "grafo_denso")
 
 	print("Gráficos generados")
 
