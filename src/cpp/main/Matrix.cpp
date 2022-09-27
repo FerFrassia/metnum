@@ -226,14 +226,15 @@ namespace MatrixOperator {
 
         for(int i = 0; i < n - 1; i++) {
             row pivot = M[i];
+            double pivotColumnValue = findColumnValue(pivot, i);
             for(int j = i+1; j <= n - 1; j++) {
-                row target = M[j];
-                double pivotColumnValue = findColumnValue(pivot, i);
-                if(abs(pivotColumnValue) > epsilon) {
-                    double x = vlMultiplyBy(target, i, pivotColumnValue);
-                    vlSubstractRow(pivot, target, augmentedColumn, n, j, i, x, epsilon);
-//                } else {
-//                    M[i][i] = double(0);
+                printf("Pivot is row: %d. Target is row: %d\n", i, j);
+                double targetColumnValue = findColumnValue(M[j], i);
+                if (targetColumnValue != 0) {
+                    if(abs(pivotColumnValue) > epsilon) {
+                        double x = (targetColumnValue / pivotColumnValue);
+                        vlSubstractRow(pivot, M[j], augmentedColumn, n, j, i, x, epsilon);
+                    }
                 }
             }
         }
@@ -249,32 +250,28 @@ namespace MatrixOperator {
         return 0;
     }
 
-    double vlMultiplyBy(row &target, int j, double pivotColumnValue) {
-        return findColumnValue(target, j) / pivotColumnValue;
-    }
-
-    void replaceColumnValue(row &target, int j, double subtrahend) {
+    void replaceColumnValue(row &target, int j, double subtrahend, double epsilon) {
         row::iterator it;
         for (it = target.begin(); it != target.end(); ++it) {
             if (get<0>(*it) == j) {
                  double originalValue = get<1>(*it);
-                 *it = make_tuple(j, originalValue - subtrahend);
+                 double newValue = originalValue - subtrahend;
+                 if (abs(newValue) > epsilon) {
+                    *it = make_tuple(j, newValue);
+                 } else {
+                     target.erase(it);
+                 }
                  return;
             }
         }
         target.push_back(make_tuple(j, -subtrahend));
-        // push back new
     }
 
     void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int targetRowIndex, int pivotRowIndex, double multiplier, double epsilon) {
-        row newTarget;
         for(double i = 0; i < n; i++) {
             double subtrahend = findColumnValue(pivot, i) * multiplier;
             if (abs(subtrahend) > epsilon) {
-//                double newValue = findColumnValue(target, i) - subtrahend;
-                replaceColumnValue(target, i, subtrahend);
-//                newTarget.push_back(make_tuple(i, newValue));
-//                M[row1][i] -= subtrahend;
+                replaceColumnValue(target, i, subtrahend, epsilon);
             }
         }
         if (abs(augmentedColumn[pivotRowIndex] * multiplier) > epsilon) {

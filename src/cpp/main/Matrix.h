@@ -55,9 +55,7 @@ namespace MatrixOperator {
 
     double findColumnValue(row &target, int j);
 
-    void replaceColumnValue(row &target, int j, double subtrahend);
-
-    double vlMultiplyBy(row &target, int j, double pivotColumnValue);
+    void replaceColumnValue(row &target, int j, double subtrahend, double epsilon);
 
     void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int row1, int row2, double multiplier, double epsilon);
 
