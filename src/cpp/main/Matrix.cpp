@@ -221,19 +221,69 @@ namespace MatrixOperator {
         return res;
     };
 
+    double findColumnValueForIT(row &r, row::iterator &it, int column) {
+        while (it != r.end()) {
+            if (column < get<0>(*it)) {
+                return 0;
+            } else if (column == get<0>(*it)) {
+                return get<1>(*it);
+            } else {
+                ++it;
+            }
+        }
+        return 0;
+    }
+
+    void replaceColumnValue(row &target, row::iterator &itOfTarget, int j, double subtrahend, double epsilon) {
+        row::iterator it;
+        for (it = target.begin(); it != target.end(); ++it) {
+            if (get<0>(*it) > j) {
+                itOfTarget = target.insert(it, make_tuple(j, -subtrahend));
+                return;
+            } else if (get<0>(*it) == j) {
+                double originalValue = get<1>(*it);
+                double newValue = originalValue - subtrahend;
+                if (abs(newValue) > epsilon) {
+                    *it = make_tuple(j, newValue);
+                } else {
+                    if (get<0>(*itOfTarget) == j) {++itOfTarget;}
+                    target.erase(it);
+                }
+                return;
+            }
+        }
+    }
+
+    void vlSubstractRow(row &pivot, row &target, row::iterator &itOfTarget, vector<double> &augmentedColumn, int n, int targetRowIndex, int pivotRowIndex, double multiplier, double epsilon) {
+        row::iterator pivotIterator = pivot.begin();
+        for(double i = 0; i < n; i++) {
+            double subtrahend = findColumnValueForIT(pivot, pivotIterator, i) * multiplier;
+            if (abs(subtrahend) > epsilon) {
+                replaceColumnValue(target, itOfTarget, i, subtrahend, epsilon);
+            }
+        }
+        if (abs(augmentedColumn[pivotRowIndex] * multiplier) > epsilon) {
+            augmentedColumn[targetRowIndex] -= augmentedColumn[pivotRowIndex] * multiplier;
+        }
+    }
+
     void vlGaussianElimination(vlMatrix &M, vector<double> &augmentedColumn, double epsilon) {
         int n = M.size();
+        vector<row::iterator> rowIterators;
+        for (int i = 0; i < n; ++i) {
+            rowIterators.push_back(M[i].begin());
+        }
 
         for(int i = 0; i < n - 1; i++) {
             row pivot = M[i];
-            double pivotColumnValue = findColumnValue(pivot, i);
+            double pivotColumnValue = get<1>(*(rowIterators[i]));
             for(int j = i+1; j <= n - 1; j++) {
-                printf("Pivot is row: %d. Target is row: %d\n", i, j);
-                double targetColumnValue = findColumnValue(M[j], i);
+                //printf("Pivot is row: %d. Target is row: %d\n", i, j);
+                double targetColumnValue = findColumnValueForIT(M[j], rowIterators[j], i);
                 if (targetColumnValue != 0) {
-                    if(abs(pivotColumnValue) > epsilon) {
+                    if (abs(pivotColumnValue) > epsilon) {
                         double x = (targetColumnValue / pivotColumnValue);
-                        vlSubstractRow(pivot, M[j], augmentedColumn, n, j, i, x, epsilon);
+                        vlSubstractRow(pivot, M[j], rowIterators[j], augmentedColumn, n, j, i, x, epsilon);
                     }
                 }
             }
@@ -248,35 +298,6 @@ namespace MatrixOperator {
             }
         }
         return 0;
-    }
-
-    void replaceColumnValue(row &target, int j, double subtrahend, double epsilon) {
-        row::iterator it;
-        for (it = target.begin(); it != target.end(); ++it) {
-            if (get<0>(*it) == j) {
-                 double originalValue = get<1>(*it);
-                 double newValue = originalValue - subtrahend;
-                 if (abs(newValue) > epsilon) {
-                    *it = make_tuple(j, newValue);
-                 } else {
-                     target.erase(it);
-                 }
-                 return;
-            }
-        }
-        target.push_back(make_tuple(j, -subtrahend));
-    }
-
-    void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int targetRowIndex, int pivotRowIndex, double multiplier, double epsilon) {
-        for(double i = 0; i < n; i++) {
-            double subtrahend = findColumnValue(pivot, i) * multiplier;
-            if (abs(subtrahend) > epsilon) {
-                replaceColumnValue(target, i, subtrahend, epsilon);
-            }
-        }
-        if (abs(augmentedColumn[pivotRowIndex] * multiplier) > epsilon) {
-            augmentedColumn[targetRowIndex] -= augmentedColumn[pivotRowIndex] * multiplier;
-        }
     }
 
     vector<double> calculatePageRankVl(vlMatrix &M, double epsilon) {
@@ -472,7 +493,7 @@ namespace VectorOperator {
 
     double approximation(CSR &M, vector<double> &x, double epsilon) {
         vector<double> res = matrixVectorMultiplication(M, x);
-        for (int i = 0; i < res.size(); ++i) {
+        for (double i = 0; i < res.size(); ++i) {
             if (abs(x[i]) > epsilon) {
                 res[i] -= x[i];
             }
@@ -482,7 +503,7 @@ namespace VectorOperator {
 
     double norm2(vector<double> &v) {
         vector<double> sum_array;
-        for (int i = 0; i < v.size(); ++i) {
+        for (double i = 0; i < v.size(); ++i) {
             sum_array.push_back(pow(v[i], 2));
         }
         double res = kahanSum(sum_array);

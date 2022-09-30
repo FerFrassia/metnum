@@ -63,6 +63,9 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
     printf("STARTING NEW PAGE RANK\n");
     vector<double> pageRankVl = calculatePageRankVl(fullVlMatrix, epsilon);
     printf("ENDING NEW PAGE RANK\n");
+    if (pageRank.size() != pageRankVl.size()) {
+        printf("pageRankOrishinal size is different from the pageRankNew \n");
+    }
     for (int i = 0; i < pageRank.size(); i++) {
         if (pageRank[i] != pageRankVl[i]) {
             printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[i], pageRankVl[i]);
