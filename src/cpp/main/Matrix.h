@@ -55,11 +55,11 @@ namespace MatrixOperator {
 
     double findColumnValue(row &target, int j);
 
-    void replaceColumnValue(row &target, int j, double subtrahend, double epsilon);
+    void replaceColumnValue(row &target, int j, double subtrahend, double epsilon, int targetRowIndex);
 
     void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int row1, int row2, double multiplier, double epsilon);
 
-    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon);
+    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon, string input);
 
     void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double eps);
 
@@ -70,6 +70,8 @@ namespace MatrixOperator {
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier, double eps);
 
     vector<double> calculatePageRank(vvMatrix &M, double eps);
+
+    void printMatrixAfterGE(vlMatrix &M, string input);
 
 }
 

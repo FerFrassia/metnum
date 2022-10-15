@@ -223,7 +223,8 @@ namespace MatrixOperator {
 
     double findColumnValueForIT(row &r, row::iterator &it, int column) {
         while (it != r.end()) {
-            if (column < get<0>(*it)) {
+            int itColumn = get<0>(*it);
+            if (column < itColumn) {
                 return 0;
             } else if (column == get<0>(*it)) {
                 return get<1>(*it);
@@ -234,11 +235,18 @@ namespace MatrixOperator {
         return 0;
     }
 
-    void replaceColumnValue(row &target, row::iterator &itOfTarget, int j, double subtrahend, double epsilon) {
+    void replaceColumnValue(row &target, row::iterator &itOfTarget, int j, double subtrahend, double epsilon, int targetRowIndex) {
         row::iterator it;
         for (it = target.begin(); it != target.end(); ++it) {
             if (get<0>(*it) > j) {
+                if (targetRowIndex == 72) {
+                    int oldColumnValue = get<0>(*itOfTarget);
+                    int stopHere =2;
+                }
                 itOfTarget = target.insert(it, make_tuple(j, -subtrahend));
+                if (targetRowIndex == 72) {
+                    int newColumnValue = get<0>(*itOfTarget);
+                }
                 return;
             } else if (get<0>(*it) == j) {
                 double originalValue = get<1>(*it);
@@ -257,9 +265,19 @@ namespace MatrixOperator {
     void vlSubstractRow(row &pivot, row &target, row::iterator &itOfTarget, vector<double> &augmentedColumn, int n, int targetRowIndex, int pivotRowIndex, double multiplier, double epsilon) {
         row::iterator pivotIterator = pivot.begin();
         for(double i = 0; i < n; i++) {
+            if (targetRowIndex == 72) {
+                int a = 3;
+            }
             double subtrahend = findColumnValueForIT(pivot, pivotIterator, i) * multiplier;
+            double toBeSubstracted = findColumnValueForIT(target, itOfTarget, i);
             if (abs(subtrahend) > epsilon) {
-                replaceColumnValue(target, itOfTarget, i, subtrahend, epsilon);
+                int subtrahendstophere = 3;
+            } else if (abs(toBeSubstracted) > epsilon) {
+                int tobesubstractedstophere = 3;
+            }
+//            if (abs(subtrahend) > epsilon && abs(toBeSubstracted) > epsilon) {
+            if (abs(subtrahend) > epsilon) {
+                replaceColumnValue(target, itOfTarget, i, subtrahend, epsilon, targetRowIndex);
             }
         }
         if (abs(augmentedColumn[pivotRowIndex] * multiplier) > epsilon) {
@@ -279,6 +297,9 @@ namespace MatrixOperator {
             double pivotColumnValue = get<1>(*(rowIterators[i]));
             for(int j = i+1; j <= n - 1; j++) {
                 //printf("Pivot is row: %d. Target is row: %d\n", i, j);
+                if (j == 72 && i == 4) {
+                    int stopHere2 = 3;
+                }
                 double targetColumnValue = findColumnValueForIT(M[j], rowIterators[j], i);
                 if (targetColumnValue != 0) {
                     if (abs(pivotColumnValue) > epsilon) {
@@ -300,9 +321,35 @@ namespace MatrixOperator {
         return 0;
     }
 
-    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon) {
+    void printMatrixAfterGE(vlMatrix &M, string input) {
+        ofstream myfile;
+        myfile.open(input + "_errors");
+        int size = M.size();
+        for (int i = 0; i < size; i++) {
+            row r_i = M[i];
+            row::iterator it;
+            for (it = r_i.begin(); it != r_i.end(); ++it) {
+               int currentColumn = get<0>(*it);
+               if (currentColumn < i) {
+                   cout << "### ERROR ### Iterating row[" << i << "] found that there is a value in column[" << currentColumn << "] value: " << get<1>(*it) << endl;
+                   myfile << "### ERROR ### Iterating row[" << i << "] found that there is a value in column[" << currentColumn << "] value: " << get<1>(*it) << "\n";
+               }
+//               for (int j = 0; j < currentColumn; j++) {
+//                   myfile << "0 ";
+//               }
+//                myfile << get<1>(*it) << " ";
+            }
+//            myfile << "\n";
+        }
+        myfile.close();
+        cout << "Finished writing file" << endl;
+    }
+
+    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon, string input) {
         vector<double> augmentedColumn = createAugmentedColumn(M.size());
         vlGaussianElimination(M, augmentedColumn, epsilon);
+
+        printMatrixAfterGE(M, input);
 
         int n = M.size();
         vector<double> r(n);
