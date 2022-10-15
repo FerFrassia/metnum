@@ -33,9 +33,9 @@ def readApproximations(path, filename):
 	return res
 
 def generateDensityGraph():
-	denso = readApproximations("./aprox/grafo_denso/", "grafo_denso_")
-	control = readApproximations("./aprox/grafo_control/", "grafo_control_")
-	ralo = readApproximations("./aprox/grafo_ralo/", "grafo_ralo_")
+	denso = readApproximations("./grafo_denso/", "grafo_denso_")
+	control = readApproximations("./grafo_control/", "grafo_control_")
+	ralo = readApproximations("./grafo_ralo/", "grafo_ralo_")
 
 	x = list(range(c.minNodes, c.maxNodes))
 	plt.xlabel("Número de páginas")
@@ -72,7 +72,7 @@ def runProbabilityTests():
 
 def runDensityTests():
 	for density in densities:
-		path = "./aprox/" + density + "/"
+		path = "./" + density + "/"
 		filename = density + "_"
 		densityTests(path, filename)
 
