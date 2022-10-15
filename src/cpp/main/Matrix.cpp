@@ -260,7 +260,7 @@ namespace MatrixOperator {
                 return get<1>(*it);
             } else {
                 ++it;
-                if (it == r.end()) {
+                if (it == r.end() || get<0>(*it) > column) {
                     --it;
                     break;
                 }
@@ -304,6 +304,7 @@ namespace MatrixOperator {
                 replaceColumnValue(target, itOfTarget, i, subtrahend, epsilon, targetRowIndex);
             }
         }
+        itOfTarget = target.begin();
         if (abs(augmentedColumn[pivotRowIndex] * multiplier) > epsilon) {
             augmentedColumn[targetRowIndex] -= augmentedColumn[pivotRowIndex] * multiplier;
         }
@@ -321,10 +322,6 @@ namespace MatrixOperator {
             row pivot = M[i];
             double pivotColumnValue = get<1>(*(rowIterators[i]));
             for(int j = i+1; j <= n - 1; j++) {
-                //printf("Pivot is row: %d. Target is row: %d\n", i, j);
-                if (j == 72 && i == 4) {
-                    int stopHere2 = 3;
-                }
                 double targetColumnValue = findColumnValueForIT(M[j], rowIterators[j], i);
                 if (targetColumnValue != 0) {
                     if (abs(pivotColumnValue) > epsilon) {
@@ -373,7 +370,6 @@ namespace MatrixOperator {
     vector<double> calculatePageRankVl(vlMatrix &M, double epsilon) {
         vector<double> augmentedColumn = createAugmentedColumn(M.size());
         vlGaussianElimination(M, augmentedColumn, epsilon);
-
 
         int n = M.size();
         vector<double> r(n);

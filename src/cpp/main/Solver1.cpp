@@ -89,7 +89,7 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
     /* CALCULO APROXIMACION */
 //    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
 //    writeOutResult(aprox, p, input + ".aprox.out");
-    for (int i = 2; i < fullMatrix.size(); ++i) {
+    for (int i = 73; i < fullMatrix.size(); ++i) {
 
        vvMatrix currentvvMatrix = MatrixBuilder::getSubvvMatrix(fullMatrix, i);
        vlMatrix currentVLMatrix = MatrixBuilder::getSubVLMatrix(fullVlMatrix, i);
