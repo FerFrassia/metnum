@@ -12,8 +12,6 @@ using namespace MatrixPrinter;
 using namespace VectorOperator;
 using namespace IO;
 
-bool useCSR = true;
-
 void Solver1::solve(std::string input, double p, double epsilon, bool measuringTime) {
     std::cout << "Leyendo archivo: " << input << std::endl;
     // printf("Resolviendo con probabilidad: %f\n", p);
@@ -46,41 +44,85 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
     diagonalMatrix d = buildD(w);
     CSR ipwd;
 
-    if (!useCSR) {
-        multiplyInPlace(w, d);
-        scale(w, p);
-        fullMatrix = subtractToIdentity(w);
-    }else {
-        CSR wd = multiply(w, d);
-        CSR pwd = scale(wd, p);
-        //printf("pWD: \n");
-        //printCSR(pwd);
-        ipwd = subtractToIdentity(pwd);
-        //printf("ipwd: \n");
-        //printCSR(ipwd);
-        fullMatrix = convertCSRTovvMatrix(ipwd);
-        //printf("fullMatrix: \n");
-        //printVvMatrix(fullMatrix);
-    }
+    CSR pwd = scale(wd, p);
+    //printf("pWD: \n");
+    //printCSR(pwd);
 
-    vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
-    normalize(pageRank);
-    auto end = chrono::steady_clock::now();
-    auto dif = end - start;
-    if (measuringTime) {
-        writeTimeResult(dif.count(), input + ".timeMeasure.out");
-    }
+    CSR ipwd = subtractToIdentity(pwd);
+    //printf("ipwd: \n");
+    //printCSR(ipwd);
+
+    vvMatrix fullMatrix = convertCSRTovvMatrix(ipwd);
+    vlMatrix fullVlMatrix = convertCSRTovlMatrix(ipwd);
+    //printf("fullMatrix: \n");
+    //printVvMatrix(fullMatrix);
+
+//    printf("STARTING ORIGINAL PAGE RANK\n");
+//    vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
+//    printf("ENDING ORIGINAL PAGE RANK\n");
+//    printf("STARTING NEW PAGE RANK\n");
+//    vector<double> pageRankVl = calculatePageRankVl(fullVlMatrix, epsilon, input);
+//    printf("ENDING NEW PAGE RANK\n");
+//    if (pageRank.size() != pageRankVl.size()) {
+//        printf("pageRankOrishinal size is different from the pageRankNew \n");
+//    }
+//    int errorCount = 0;
+//    for (int i = 0; i < pageRank.size(); i++) {
+//        if (pageRank[i] != pageRankVl[i]) {
+//            printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[i], pageRankVl[i]);
+//            errorCount++;
+//        }
+//    }
+//    if (errorCount > 0) {
+//        printf("Oh boy, you've got %i errors. Better do something about it.\n", errorCount);
+//    } else {
+//        printf("Congrats sailor! You've made it through!\n");
+//    }
+//    normalize(pageRank);
+//    auto end = chrono::steady_clock::now();
+//    auto dif = end - start;
+//    if (measuringTime) {
+//        writeTimeResult(dif.count(), input + ".timeMeasure.out");
+//    }
     
     /* CALCULO APROXIMACION */
-    vector<double> aprox;
-    if (!useCSR) {
-        aprox.push_back(approximation(fullMatrix, pageRank, epsilon));
-    } else {
-        aprox.push_back(approximation(ipwd, pageRank, epsilon));
-    }
-    writeOutResult(aprox, p, input + ".aprox.out");
+//    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
+//    writeOutResult(aprox, p, input + ".aprox.out");
+    for (int i = 73; i < fullMatrix.size(); ++i) {
 
-    // char resultMsg[] = "result: \n";
-    // printAVector(pageRank, resultMsg);
-    writeOutResult(pageRank, p, input + ".out");
+       vvMatrix currentvvMatrix = MatrixBuilder::getSubvvMatrix(fullMatrix, i);
+       vlMatrix currentVLMatrix = MatrixBuilder::getSubVLMatrix(fullVlMatrix, i);
+
+
+        vector<double> pageRank = calculatePageRank(currentvvMatrix, epsilon);
+        vector<double> pageRankVl = calculatePageRankVl(currentVLMatrix, epsilon);
+
+        if (pageRank.size() != pageRankVl.size()) {
+            printf("pageRankOrishinal size is different from the pageRankNew \n");
+        }
+        for (int j = 0; j < pageRank.size(); j++) {
+            if (pageRank[j] != pageRankVl[j]) {
+                printVvMatrix(currentvvMatrix);
+                printVLMatrix(currentVLMatrix);
+                printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[j], pageRankVl[j]);
+            }
+        }
+
+        cout << "dimension " << i << ":...OK" << endl;
+    }
+
+//    normalize(pageRank);
+//    auto end = chrono::steady_clock::now();
+//    auto dif = end - start;
+//    if (measuringTime) {
+//        writeTimeResult(dif.count(), input + ".timeMeasure.out");
+//    }
+//
+//    /* CALCULO APROXIMACION */
+//    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
+//    writeOutResult(aprox, p, input + ".aprox.out");
+//
+//    // char resultMsg[] = "result: \n";
+//    // printAVector(pageRank, resultMsg);
+//    writeOutResult(pageRank, p, input + ".out");
 }

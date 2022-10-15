@@ -1,6 +1,21 @@
 import subprocess as sub
 import config as c
 
+def runCicloVariandoP():
+	print("Corriendo test: Ciclo variando p")
+	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
+		sub.run("../tp1 ./ciclo_variando_p/ciclo_7_p_" + str(p) + ".txt " + str(p/100), shell=True)
+
+def runEstrellaQueApunteAUnaPaginaQueNoApunteANadieVariandoP():
+	print("Corriendo test: Estrella que apunta a una pagina que no apunta a nadie variando p")
+	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			sub.run("../tp1 ./estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_variando_p/estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_7_p_" + str(p) + ".txt " + str(p/100), shell=True)
+			p = 0.01
+		sub.run("../tp1 ./estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_variando_p/estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_7_p_" + str(p) + ".txt " + str(p/100), shell=True)
+
 def runCiclo():
 	print("Corriendo test: Ciclo")
 	for i in range(c.minNodes, c.maxNodes+1):
@@ -9,7 +24,7 @@ def runCiclo():
 def runEstrellaQueApunteAUnaPaginaQueNoApunteANadie():
 	print("Corriendo test: Estrella que apunta a una pagina que no apunta a nadie")
 	for i in range(c.minNodes, c.maxNodes+1):
-		sub.run("../tp1 ./estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie/estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_" + str(i) + ".txt " + str(c.p), shell=True)
+		sub.run("../tp1 ./estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie/estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_" + str(i) + ".txt " + str(c.starVsNodeP), shell=True)
 
 def runEstrellaVsClique():
 	print("Corriendo test: Estrella vs clique")
@@ -25,11 +40,13 @@ def runTestP():
 	print("Corriendo test: Test p")
 	for p in range(c.minP, c.maxP*100+1):
 		if p == 0:
+			sub.run("../tp1 ./testeo_p/grafo_1/grafo_1_testeo_p_" + str(p) + ".txt " + str(p), shell=True)
 			p = 0.01
 		sub.run("../tp1 ./testeo_p/grafo_1/grafo_1_testeo_p_" + str(p) + ".txt " + str(p/100), shell=True)
 
 	for p in range(c.minP, c.maxP*100+1):
 		if p == 0:
+			sub.run("../tp1 ./testeo_p/grafo_2/grafo_2_testeo_p_" + str(p) + ".txt " + str(p), shell=True)
 			p = 0.01
 		sub.run("../tp1 ./testeo_p/grafo_2/grafo_2_testeo_p_" + str(p) + ".txt " + str(p/100), shell=True)
 
@@ -79,6 +96,8 @@ def runTests():
 
 	timeExperimentGraphSizes = [8, 16, 32, 64, 128, 256, 512, 1024]
 
+	runCicloVariandoP()
+	runEstrellaQueApunteAUnaPaginaQueNoApunteANadieVariandoP()
 	runCiclo()
 	runEstrellaQueApunteAUnaPaginaQueNoApunteANadie()
 	runEstrellaVsClique()

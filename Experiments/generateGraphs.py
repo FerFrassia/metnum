@@ -9,6 +9,76 @@ import os
 def allElementsAreEqual(elements):
 	return all(x == elements[0] for x in elements)
 
+def generateCicloChangingPPlot():
+	results1 = []
+	results2 = []
+	results3 = []
+	results4 = []
+	results5 = []
+	results6 = []
+	results7 = []
+	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
+		file = open("./ciclo_variando_p/ciclo_7_p_" + str(p) + ".txt.out", "r")
+		lines = (file.readlines())[1:]
+		file.close()
+		results1.append(float(lines[0]))
+		results2.append(float(lines[1]))
+		results3.append(float(lines[2]))
+		results4.append(float(lines[3]))
+		results5.append(float(lines[4]))
+		results6.append(float(lines[5]))
+		results7.append(float(lines[6]))
+
+	x = [x/100 for x in range(c.minP, c.maxP*100+1)]
+	plt.xlabel("p")
+	plt.ylabel("Rankings")
+	plt.plot(x, results1, color="mediumblue", label="P1")
+	plt.plot(x, results2, color="cornflowerblue", label="P2")
+	plt.plot(x, results3, color="cyan", label="P3")
+	plt.plot(x, results4, color="lightblue", label="P4")
+	plt.plot(x, results5, color="red", label="P5")
+	plt.plot(x, results6, color="maroon", label="P6")
+	plt.plot(x, results7, color="green", label="P7")
+	plt.legend()
+	plt.show()
+
+def generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieChangingPPlot():
+	results1 = []
+	results2 = []
+	results3 = []
+	results4 = []
+	results5 = []
+	results6 = []
+	results7 = []
+	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
+		file = open("./estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_variando_p/estrella_que_apunte_a_una_pagina_que_no_apunte_a_nadie_7_p_" + str(p) + ".txt.out", "r")
+		lines = (file.readlines())[1:]
+		file.close()
+		results1.append(float(lines[0]))
+		results2.append(float(lines[1]))
+		results3.append(float(lines[2]))
+		results4.append(float(lines[3]))
+		results5.append(float(lines[4]))
+		results6.append(float(lines[5]))
+		results7.append(float(lines[6]))
+
+	x = [x/100 for x in range(c.minP, c.maxP*100+1)]
+	plt.xlabel("p")
+	plt.ylabel("Rankings")
+	plt.plot(x, results1, color="mediumblue", label="P1")
+	plt.plot(x, results2, color="cornflowerblue", label="P2")
+	plt.plot(x, results3, color="cyan", label="P3")
+	plt.plot(x, results4, color="lightblue", label="P4")
+	plt.plot(x, results5, color="red", label="P5")
+	plt.plot(x, results6, color="maroon", label="P6")
+	plt.plot(x, results7, color="green", label="P7")
+	plt.legend()
+	plt.show()
+
 def generateCicloGraph():
 	y = []
 	for n in range(c.minNodes, c.maxNodes+1):
@@ -310,6 +380,8 @@ def generateGraphs():
 	generarGrafoRalo()
 	generarGrafoDenso()
 	generarGrafoControl()
+	generateCicloChangingPPlot()
+	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieChangingPPlot()
 	generateCicloGraph()
 	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieGraph()
 	generateEstrellaVsCliqueGraph()

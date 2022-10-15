@@ -9,6 +9,8 @@ using namespace std;
 typedef map<int, map<int, double>> coordinateList;
 typedef vector<double> diagonalMatrix;
 typedef vector<vector<double>> vvMatrix;
+typedef list<tuple<int, double>> row;
+typedef vector<row> vlMatrix;
 
 struct CSR {
     vector<double> A;
@@ -36,6 +38,12 @@ namespace MatrixBuilder {
     vvMatrix convertCSRTovvMatrix(CSR &M);
 
     vvMatrix buildIdentity(int n);
+
+    vlMatrix convertCSRTovlMatrix(CSR &M);
+
+    vvMatrix getSubvvMatrix(const vvMatrix &m, const int size);
+
+    vlMatrix getSubVLMatrix(vlMatrix &m, const int size);
 }
 
 namespace MatrixOperator {
@@ -53,6 +61,16 @@ namespace MatrixOperator {
     CSR subtractToIdentity(CSR &M);
     vvMatrix subtractToIdentity(InputMatrix &M);
 
+    void vlGaussianElimination(vlMatrix &M, vector<double> &augmentedColumn, double epsilon);
+
+    double findColumnValue(row &target, int j);
+
+    void replaceColumnValue(row &target, int j, double subtrahend, double epsilon, int targetRowIndex);
+
+    void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int row1, int row2, double multiplier, double epsilon);
+
+    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon);
+
     void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double eps);
 
     vector<double> createAugmentedColumn(int n);
@@ -62,6 +80,8 @@ namespace MatrixOperator {
     void substractRow(vvMatrix &M, vector<double> &augmentedColumn, int row1, int row2, double multiplier, double eps);
 
     vector<double> calculatePageRank(vvMatrix &M, double eps);
+
+    void printMatrixAfterGE(vlMatrix &M, string input);
 
 }
 
@@ -76,6 +96,8 @@ namespace MatrixPrinter {
     void printVector(vector<int>& V, char* msg);
 
     void printVvMatrix(vvMatrix &matrix);
+
+    void printVLMatrix(vlMatrix &matrix);
 
 }
 

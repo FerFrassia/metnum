@@ -1,6 +1,7 @@
-p = 0.5
-minNodes = 5
-maxNodes = 300
+p = 0.
+starVsNodeP = 0.75
+minNodes = 3
+maxNodes = 1000
 minP = 0
 maxP = 1
 
