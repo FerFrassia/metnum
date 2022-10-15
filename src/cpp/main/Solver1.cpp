@@ -94,12 +94,10 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
        vvMatrix currentvvMatrix = MatrixBuilder::getSubvvMatrix(fullMatrix, i);
        vlMatrix currentVLMatrix = MatrixBuilder::getSubVLMatrix(fullVlMatrix, i);
 
-        printf("STARTING ORIGINAL PAGE RANK\n");
+
         vector<double> pageRank = calculatePageRank(currentvvMatrix, epsilon);
-        printf("ENDING ORIGINAL PAGE RANK\n");
-        printf("STARTING NEW PAGE RANK\n");
         vector<double> pageRankVl = calculatePageRankVl(currentVLMatrix, epsilon);
-        printf("ENDING NEW PAGE RANK\n");
+
         if (pageRank.size() != pageRankVl.size()) {
             printf("pageRankOrishinal size is different from the pageRankNew \n");
         }
@@ -110,6 +108,8 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
                 printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[j], pageRankVl[j]);
             }
         }
+
+        cout << "dimension " << i << ":...OK" << endl;
     }
 
 

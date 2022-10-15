@@ -260,6 +260,10 @@ namespace MatrixOperator {
                 return get<1>(*it);
             } else {
                 ++it;
+                if (it == r.end()) {
+                    --it;
+                    break;
+                }
             }
         }
         return 0;
