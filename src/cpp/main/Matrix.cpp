@@ -150,10 +150,7 @@ namespace MatrixBuilder {
                  */
                 if (M.JA[row_start] == j && row_start < M.IA[i+1]) {
                     row.push_back(make_tuple(j, M.A[row_start]));
-//                    row.push_back(M.A[row_start]);
                     row_start++;
-//                } else {
-//                    row.push_back(0);
                 }
 
             }
@@ -390,30 +387,6 @@ namespace MatrixOperator {
             }
         }
         return 0;
-    }
-
-    void printMatrixAfterGE(vlMatrix &M, string input) {
-        ofstream myfile;
-        myfile.open(input + "_errors");
-        int size = M.size();
-        for (int i = 0; i < size; i++) {
-            row r_i = M[i];
-            row::iterator it;
-            for (it = r_i.begin(); it != r_i.end(); ++it) {
-               int currentColumn = get<0>(*it);
-               if (currentColumn < i) {
-                   cout << "### ERROR ### Iterating row[" << i << "] found that there is a value in column[" << currentColumn << "] value: " << get<1>(*it) << endl;
-                   myfile << "### ERROR ### Iterating row[" << i << "] found that there is a value in column[" << currentColumn << "] value: " << get<1>(*it) << "\n";
-               }
-//               for (int j = 0; j < currentColumn; j++) {
-//                   myfile << "0 ";
-//               }
-//                myfile << get<1>(*it) << " ";
-            }
-//            myfile << "\n";
-        }
-        myfile.close();
-        cout << "Finished writing file" << endl;
     }
 
     vector<double> calculatePageRankVl(vlMatrix &M, double epsilon) {

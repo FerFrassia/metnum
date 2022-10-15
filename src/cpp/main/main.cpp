@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
 
     bool measuringTime = false;
     double eps = pow(10, -6);
+    bool comparePreviousImplementation = false;
     for (int i = 0; i < argc; i++) {
         std::string currentArg = argv[i];
         if (currentArg == "-t") {
@@ -19,13 +20,16 @@ int main(int argc, char *argv[]) {
             int coef = std::atof(argv[i+1]);
             eps = pow(10, -coef);
         }
+        if (currentArg == "-cmp") {
+            comparePreviousImplementation = true;
+        }
     }
 
     std::string input = argv[1];
     double p = std::atof(argv[2]);
 
     Solver *instance = new Solver1();
-    instance->solve(input, p, eps, measuringTime);
+    instance->solve(input, p, eps, measuringTime, comparePreviousImplementation);
     delete instance;
 
     return 0;
