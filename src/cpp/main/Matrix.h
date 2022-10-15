@@ -39,6 +39,9 @@ namespace MatrixBuilder {
 
     vlMatrix convertCSRTovlMatrix(CSR &M);
 
+    vvMatrix getSubvvMatrix(const vvMatrix &m, const int size);
+
+    vlMatrix getSubVLMatrix(vlMatrix &m, const int size);
 }
 
 namespace MatrixOperator {
@@ -59,7 +62,7 @@ namespace MatrixOperator {
 
     void vlSubstractRow(row &pivot, row &target, vector<double> &augmentedColumn, int n, int row1, int row2, double multiplier, double epsilon);
 
-    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon, string input);
+    vector<double> calculatePageRankVl(vlMatrix &M, double epsilon);
 
     void gaussianElimination(vvMatrix &M, vector<double> &augmentedColumn, double eps);
 
@@ -86,6 +89,8 @@ namespace MatrixPrinter {
     void printVector(vector<int>& V, char* msg);
 
     void printVvMatrix(vvMatrix &matrix);
+
+    void printVLMatrix(vlMatrix &matrix);
 
 }
 

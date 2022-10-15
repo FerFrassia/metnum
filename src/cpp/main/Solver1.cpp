@@ -57,39 +57,74 @@ void Solver1::solve(std::string input, double p, double epsilon, bool measuringT
     //printf("fullMatrix: \n");
     //printVvMatrix(fullMatrix);
 
-    printf("STARTING ORIGINAL PAGE RANK\n");
-    vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
-    printf("ENDING ORIGINAL PAGE RANK\n");
-    printf("STARTING NEW PAGE RANK\n");
-    vector<double> pageRankVl = calculatePageRankVl(fullVlMatrix, epsilon, input);
-    printf("ENDING NEW PAGE RANK\n");
-    if (pageRank.size() != pageRankVl.size()) {
-        printf("pageRankOrishinal size is different from the pageRankNew \n");
-    }
-    int errorCount = 0;
-    for (int i = 0; i < pageRank.size(); i++) {
-        if (pageRank[i] != pageRankVl[i]) {
-            printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[i], pageRankVl[i]);
-            errorCount++;
-        }
-    }
-    if (errorCount > 0) {
-        printf("Oh boy, you've got %i errors. Better do something about it.\n", errorCount);
-    } else {
-        printf("Congrats sailor! You've made it through!\n");
-    }
+//<<<<<<< Updated upstream
+//    printf("STARTING ORIGINAL PAGE RANK\n");
+//    vector<double> pageRank = calculatePageRank(fullMatrix, epsilon);
+//    printf("ENDING ORIGINAL PAGE RANK\n");
+//    printf("STARTING NEW PAGE RANK\n");
+//    vector<double> pageRankVl = calculatePageRankVl(fullVlMatrix, epsilon, input);
+//    printf("ENDING NEW PAGE RANK\n");
+//    if (pageRank.size() != pageRankVl.size()) {
+//        printf("pageRankOrishinal size is different from the pageRankNew \n");
+//    }
+//    int errorCount = 0;
+//    for (int i = 0; i < pageRank.size(); i++) {
+//        if (pageRank[i] != pageRankVl[i]) {
+//            printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[i], pageRankVl[i]);
+//            errorCount++;
+//        }
+//    }
+//    if (errorCount > 0) {
+//        printf("Oh boy, you've got %i errors. Better do something about it.\n", errorCount);
+//    } else {
+//        printf("Congrats sailor! You've made it through!\n");
+//    }
 //    normalize(pageRank);
-    auto end = chrono::steady_clock::now();
-    auto dif = end - start;
-    if (measuringTime) {
-        writeTimeResult(dif.count(), input + ".timeMeasure.out");
-    }
+//    auto end = chrono::steady_clock::now();
+//    auto dif = end - start;
+//    if (measuringTime) {
+//        writeTimeResult(dif.count(), input + ".timeMeasure.out");
+//    }
     
     /* CALCULO APROXIMACION */
 //    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
 //    writeOutResult(aprox, p, input + ".aprox.out");
+    for (int i = 2; i < fullMatrix.size(); ++i) {
 
-    // char resultMsg[] = "result: \n";
-    // printAVector(pageRank, resultMsg);
-    writeOutResult(pageRank, p, input + ".out");
+       vvMatrix currentvvMatrix = MatrixBuilder::getSubvvMatrix(fullMatrix, i);
+       vlMatrix currentVLMatrix = MatrixBuilder::getSubVLMatrix(fullVlMatrix, i);
+
+        printf("STARTING ORIGINAL PAGE RANK\n");
+        vector<double> pageRank = calculatePageRank(currentvvMatrix, epsilon);
+        printf("ENDING ORIGINAL PAGE RANK\n");
+        printf("STARTING NEW PAGE RANK\n");
+        vector<double> pageRankVl = calculatePageRankVl(currentVLMatrix, epsilon);
+        printf("ENDING NEW PAGE RANK\n");
+        if (pageRank.size() != pageRankVl.size()) {
+            printf("pageRankOrishinal size is different from the pageRankNew \n");
+        }
+        for (int j = 0; j < pageRank.size(); j++) {
+            if (pageRank[j] != pageRankVl[j]) {
+                printVvMatrix(currentvvMatrix);
+                printVLMatrix(currentVLMatrix);
+                printf("SOMETHING BROKE OMG OMG OMG!! pageRankOrishinal: %f. pageRankNew: %f\n", pageRank[j], pageRankVl[j]);
+            }
+        }
+    }
+
+
+//    normalize(pageRank);
+//    auto end = chrono::steady_clock::now();
+//    auto dif = end - start;
+//    if (measuringTime) {
+//        writeTimeResult(dif.count(), input + ".timeMeasure.out");
+//    }
+//
+//    /* CALCULO APROXIMACION */
+//    vector<double> aprox(1, approximation(ipwd, pageRank, epsilon));
+//    writeOutResult(aprox, p, input + ".aprox.out");
+//
+//    // char resultMsg[] = "result: \n";
+//    // printAVector(pageRank, resultMsg);
+//    writeOutResult(pageRank, p, input + ".out");
 }
