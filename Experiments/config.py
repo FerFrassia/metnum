@@ -1,4 +1,4 @@
-p = 0.
+p = 0.5
 starVsNodeP = 0.75
 minNodes = 3
 maxNodes = 1000
