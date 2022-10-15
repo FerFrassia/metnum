@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import config as c
 import math
+import random
+import os
+
 
 def allElementsAreEqual(elements):
 	return all(x == elements[0] for x in elements)
@@ -163,6 +166,8 @@ def generateGrafo1Graph():
 	results3 = []
 	results4 = []
 	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
 		file = open("./testeo_p/grafo_1/grafo_1_testeo_p_" + str(p) + ".txt.out", "r")
 		lines = (file.readlines())[1:]
 		file.close()
@@ -189,6 +194,8 @@ def generateGrafo2Graph():
 	results5 = []
 	results6 = []
 	for p in range(c.minP, c.maxP*100+1):
+		if p == 0:
+			p = 0.01
 		file = open("./testeo_p/grafo_2/grafo_2_testeo_p_" + str(p) + ".txt.out", "r")
 		lines = (file.readlines())[1:]
 		file.close()
@@ -319,9 +326,60 @@ def generatePlotWithStandardDeviationFor(graphType, graphId):
 	plt.legend()
 	plt.show()
 
+def crearRuta(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
+
+def generarGrafo(file, n, cantLinks):
+	file.write(str(n) + "\n")
+	file.write(str(cantLinks) + "\n")
+
+	writtenLinks = []
+	for i in range(1, cantLinks+1):
+		link = generarRandomLink(n)
+		while link in writtenLinks:
+			link = generarRandomLink(n)
+		file.write(str(link[0]) + " " + str(link[1]) + "\n")
+		writtenLinks.append(link)
+
+def generarRandomLink(n):
+	possiblePages = [x for x in range(1,n+1)]
+	referencingPage = random.choice(possiblePages)
+	possiblePages.remove(referencingPage)
+	referencedPage = random.choice(possiblePages)
+	return (referencingPage, referencedPage)
+
+def generarGrafoRalo():
+	print("Generando: Grafo Ralo")
+	path = crearRuta("./grafo_ralo")
+	for n in range(c.minNodes, c.maxNodes):
+		output = open(path + "/grafo_ralo_" + str(n) + ".txt", "w")
+		generarGrafo(output, n, int(n*(n-1)*0.05))
+		output.close()
+
+def generarGrafoDenso():
+	print("Generando: Grafo Denso")
+	path = crearRuta("./grafo_denso")
+	for n in range(c.minNodes, c.maxNodes):
+		output = open(path + "/grafo_denso_" + str(n) + ".txt", "w")
+		generarGrafo(output, n, int(n*(n-1)*0.9))
+		output.close()
+
+def generarGrafoControl():
+	print("Generando: Grafo Control")
+	path = crearRuta("./grafo_control")
+	for n in range(c.minNodes, c.maxNodes):
+		output = open(path + "/grafo_control_" + str(n) + ".txt", "w")
+		generarGrafo(output, n, int(n*(n-1)*0.4))
+		output.close()
+
 def generateGraphs():
 	print("Generando gráficos")
 
+	generarGrafoRalo()
+	generarGrafoDenso()
+	generarGrafoControl()
 	generateCicloChangingPPlot()
 	generateEstrellaQueApunteAUnaPaginaQueNoApunteANadieChangingPPlot()
 	generateCicloGraph()
@@ -336,3 +394,4 @@ def generateGraphs():
 
 	print("Gráficos generados")
 
+generateGraphs()
